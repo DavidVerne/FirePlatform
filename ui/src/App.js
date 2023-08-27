@@ -1,23 +1,81 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { CognitoUserPool, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import AWS from 'aws-sdk/global';
+import 'amazon-cognito-identity-js/dist/aws-cognito-sdk';
 
-function App() {
+// sdk setup
+const poolData = {
+  UserPoolId: 'eu-west-2_h47DsZQl6',
+  ClientId: '6ctd4u4rvjdtatvjqptcdcs783',
+};
+const userPool = new CognitoUserPool(poolData);
+AWS.config.region = 'eu-west-2';
+
+// authentication functions
+const signIn = (username, password) => {
+
+  const authenticationData = {
+    Username: username,
+    Password: password,
+  };
+
+  const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+  const userData = {
+    Username: username,
+    Pool: userPool,
+  };
+
+  const cognitoUser = new CognitoUser(userData);
+
+  cognitoUser.authenticateUser(authenticationDetails, {
+    onSuccess: (session) => {
+      console.log('Authentication successful: ', session);
+    },
+    onFailure: (error) => {
+      console.log('Authentication failed: ', error);
+    }
+  });
+};
+
+const signOut = () => {
+  const cognitoUser = userPool.getCurrentUser();
+  if (cognitoUser) {
+    cognitoUser.signOut();
+    console.log('Signed out');
+  }
+};
+
+const App = () => {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignIn = () => {
+    signIn(username, password);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)} 
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)} 
+      />
+      <button onClick={handleSignIn}>Sign In</button>
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 }
