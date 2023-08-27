@@ -2,7 +2,12 @@ import './App.css';
 import React, { useState } from 'react';
 import { CognitoUserPool, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import AWS from 'aws-sdk/global';
-import 'amazon-cognito-identity-js/dist/aws-cognito-sdk';
+// import 'amazon-cognito-identity-js/dist/aws-cognito-sdk';
+// import { CognitoIdentityProviderClient, AddCustomAttributesCommand } from "@aws-sdk/client-cognito-identity-provider";
+// import * as AWS from "@aws-sdk/client-cognito-identity-provider";
+
+// import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
+// import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
 
 // sdk setup
 const poolData = {
