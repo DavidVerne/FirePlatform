@@ -103,6 +103,12 @@
               }
             }
           },
+          "TestPostLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/fireplatform-dev-testPost"
+            }
+          },
           "LoginUserLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
@@ -202,6 +208,41 @@
               }
             }
           },
+          "TestPostLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
+              },
+              "Handler": "user/testpost.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "fireplatform-dev-testPost",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "user_pool_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"user_pool_id\"]"
+                  },
+                  "client_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"client_id\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "TestPostLogGroup"
+            ]
+          },
           "LoginUserLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -209,7 +250,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693232272525-2023-08-28T14:17:52.525Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
               },
               "Handler": "user/login.handler",
               "Runtime": "nodejs14.x",
@@ -244,7 +285,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693232272525-2023-08-28T14:17:52.525Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
               },
               "Handler": "user/signup.handler",
               "Runtime": "nodejs14.x",
@@ -279,7 +320,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693232272525-2023-08-28T14:17:52.525Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
               },
               "Handler": "user/private.handler",
               "Runtime": "nodejs14.x",
@@ -307,34 +348,44 @@
               "PrivateAPILogGroup"
             ]
           },
-          "LoginUserLambdaVersionFVNhK7ZJTXn0L1K4AzF144k4YpHkGPOpVjISeRaY640": {
+          "TestPostLambdaVersionNX3Mda6DbWGms8eHnmWK4EGu6YL7UMSw8PGPF7ZQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "TestPostLambdaFunction"
+              },
+              "CodeSha256": "AqFCDrQU4UIP/ah41BoLKlX6QFaQH7ONIbnrLZWgPUo="
+            }
+          },
+          "LoginUserLambdaVersionirPIqQPXRg9HtaWeVDXzwxRwRztfWWPQsh4NIfAMgjg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginUserLambdaFunction"
               },
-              "CodeSha256": "8D+aPzjIW92xvJWlQppluTj/r+p7eUEsMDlEF0ty36c="
+              "CodeSha256": "AqFCDrQU4UIP/ah41BoLKlX6QFaQH7ONIbnrLZWgPUo="
             }
           },
-          "SignupUserLambdaVersion3Glf6qWsXhjT2AsyDinn82u5RcrZUcvcWh0kT78PGGw": {
+          "SignupUserLambdaVersionmjdaY5YGnparpZo7LClwizBgIxUVSU14wC9wu3Wv50s": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "SignupUserLambdaFunction"
               },
-              "CodeSha256": "8D+aPzjIW92xvJWlQppluTj/r+p7eUEsMDlEF0ty36c="
+              "CodeSha256": "AqFCDrQU4UIP/ah41BoLKlX6QFaQH7ONIbnrLZWgPUo="
             }
           },
-          "PrivateAPILambdaVersionuebTnqTn7IQewsIw7br52oTMgymxxIlY7lvlkCY": {
+          "PrivateAPILambdaVersion8zMGCE6s1SCmPv2c1FIOkk4GF5DBxGcUDemFPdyTs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "PrivateAPILambdaFunction"
               },
-              "CodeSha256": "8D+aPzjIW92xvJWlQppluTj/r+p7eUEsMDlEF0ty36c="
+              "CodeSha256": "AqFCDrQU4UIP/ah41BoLKlX6QFaQH7ONIbnrLZWgPUo="
             }
           },
           "ApiGatewayRestApi": {
@@ -359,6 +410,18 @@
                 ]
               },
               "PathPart": "user",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUserTestpost": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUser"
+              },
+              "PathPart": "testpost",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -395,6 +458,51 @@
                 "Ref": "ApiGatewayResourceUser"
               },
               "PathPart": "private",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodUserTestpostOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserTestpost"
+              },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -534,6 +642,52 @@
                 "Ref": "ApiGatewayRestApi"
               }
             }
+          },
+          "ApiGatewayMethodUserTestpostPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserTestpost"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "TestPostLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "TestPostLambdaPermissionApiGateway"
+            ]
           },
           "ApiGatewayMethodUserLoginPost": {
             "Type": "AWS::ApiGateway::Method",
@@ -696,7 +850,7 @@
               ]
             }
           },
-          "ApiGatewayDeployment1693232264025": {
+          "ApiGatewayDeployment1693511283802": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -705,13 +859,52 @@
               "StageName": "dev"
             },
             "DependsOn": [
+              "ApiGatewayMethodUserTestpostOptions",
               "ApiGatewayMethodUserLoginOptions",
               "ApiGatewayMethodUserSignupOptions",
               "ApiGatewayMethodUserPrivateOptions",
+              "ApiGatewayMethodUserTestpostPost",
               "ApiGatewayMethodUserLoginPost",
               "ApiGatewayMethodUserSignupPost",
               "ApiGatewayMethodUserPrivatePost"
             ]
+          },
+          "TestPostLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "TestPostLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
           },
           "LoginUserLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
@@ -859,10 +1052,19 @@
               "Name": "sls-fireplatform-dev-ServerlessDeploymentBucketName"
             }
           },
+          "TestPostLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "TestPostLambdaVersionNX3Mda6DbWGms8eHnmWK4EGu6YL7UMSw8PGPF7ZQ"
+            },
+            "Export": {
+              "Name": "sls-fireplatform-dev-TestPostLambdaFunctionQualifiedArn"
+            }
+          },
           "LoginUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginUserLambdaVersionFVNhK7ZJTXn0L1K4AzF144k4YpHkGPOpVjISeRaY640"
+              "Ref": "LoginUserLambdaVersionirPIqQPXRg9HtaWeVDXzwxRwRztfWWPQsh4NIfAMgjg"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-LoginUserLambdaFunctionQualifiedArn"
@@ -871,7 +1073,7 @@
           "SignupUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SignupUserLambdaVersion3Glf6qWsXhjT2AsyDinn82u5RcrZUcvcWh0kT78PGGw"
+              "Ref": "SignupUserLambdaVersionmjdaY5YGnparpZo7LClwizBgIxUVSU14wC9wu3Wv50s"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-SignupUserLambdaFunctionQualifiedArn"
@@ -880,7 +1082,7 @@
           "PrivateAPILambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "PrivateAPILambdaVersionuebTnqTn7IQewsIw7br52oTMgymxxIlY7lvlkCY"
+              "Ref": "PrivateAPILambdaVersion8zMGCE6s1SCmPv2c1FIOkk4GF5DBxGcUDemFPdyTs"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-PrivateAPILambdaFunctionQualifiedArn"
@@ -1003,6 +1205,44 @@
     ],
     "pluginsData": {},
     "functions": {
+      "testPost": {
+        "handler": "user/testpost.handler",
+        "events": [
+          {
+            "http": {
+              "path": "user/testpost",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "fireplatform-dev-testPost",
+        "package": {
+          "artifact": ".serverless/fireplatform.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "TestPostLambdaVersionNX3Mda6DbWGms8eHnmWK4EGu6YL7UMSw8PGPF7ZQ"
+      },
       "loginUser": {
         "handler": "user/login.handler",
         "package": {
@@ -1039,7 +1279,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "LoginUserLambdaVersionFVNhK7ZJTXn0L1K4AzF144k4YpHkGPOpVjISeRaY640"
+        "versionLogicalId": "LoginUserLambdaVersionirPIqQPXRg9HtaWeVDXzwxRwRztfWWPQsh4NIfAMgjg"
       },
       "signupUser": {
         "handler": "user/signup.handler",
@@ -1077,7 +1317,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "SignupUserLambdaVersion3Glf6qWsXhjT2AsyDinn82u5RcrZUcvcWh0kT78PGGw"
+        "versionLogicalId": "SignupUserLambdaVersionmjdaY5YGnparpZo7LClwizBgIxUVSU14wC9wu3Wv50s"
       },
       "privateAPI": {
         "handler": "user/private.handler",
@@ -1131,7 +1371,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "PrivateAPILambdaVersionuebTnqTn7IQewsIw7br52oTMgymxxIlY7lvlkCY"
+        "versionLogicalId": "PrivateAPILambdaVersion8zMGCE6s1SCmPv2c1FIOkk4GF5DBxGcUDemFPdyTs"
       }
     },
     "resources": {
@@ -1186,7 +1426,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1693232272525-2023-08-28T14:17:52.525Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z",
     "artifact": ""
   }
 }

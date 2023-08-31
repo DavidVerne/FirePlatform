@@ -24,6 +24,14 @@ plugins:
   - serverless-webpack
 
 functions:
+  testPost:
+    handler: user/testpost.handler
+    events:
+      - http:
+          path: user/testpost
+          method: post
+          cors: true
+
   loginUser: 
     handler: user/login.handler
     package:
