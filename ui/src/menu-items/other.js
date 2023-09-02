@@ -14,7 +14,7 @@ const other = {
       id: 'sample-page',
       title: 'Retirement Calculator',
       type: 'item',
-      url: '#',
+      url: '/sample-page/',
       icon: icons.IconBrandChrome,
       breadcrumbs: false
     },
