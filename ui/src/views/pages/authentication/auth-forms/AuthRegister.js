@@ -36,22 +36,15 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// ===========================|| FIREBASE - REGISTER ||=========================== //
-
 const FirebaseRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  // const customization = useSelector((state) => state.customization);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
-
-  // const googleHandler = async () => {
-  //   console.error('Register');
-  // };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -118,9 +111,9 @@ const FirebaseRegister = ({ ...others }) => {
           </Box>
         </Grid>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
-          <Box sx={{ mb: 2 }}>
+          {/* <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign up with Email address</Typography>
-          </Box>
+          </Box> */}
         </Grid>
       </Grid>
 

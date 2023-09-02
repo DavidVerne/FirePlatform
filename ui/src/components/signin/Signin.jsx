@@ -80,7 +80,7 @@ const Login = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2" sx={{ color: "black", textDecorationColor: "black" }}>
+                <Link href="/register/" variant="body2" sx={{ color: "black", textDecorationColor: "black" }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
