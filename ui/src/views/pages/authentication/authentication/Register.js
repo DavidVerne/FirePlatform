@@ -10,10 +10,11 @@ import AuthCardWrapper from '../AuthCardWrapper';
 import Logo from 'ui-component/Logo';
 import AuthRegister from '../auth-forms/AuthRegister';
 import AuthFooter from 'ui-component/cards/AuthFooter';
-
 // assets
 
 // ===============================|| AUTH3 - REGISTER ||=============================== //
+
+// CORRECT SIGN UP PAGE
 
 const Register = () => {
   const theme = useTheme();
