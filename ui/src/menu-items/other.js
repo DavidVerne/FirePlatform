@@ -12,17 +12,17 @@ const other = {
   children: [
     {
       id: 'sample-page',
-      title: 'Sample Page',
+      title: 'Retirement Calculator',
       type: 'item',
-      url: '/sample-page',
+      url: '#',
       icon: icons.IconBrandChrome,
       breadcrumbs: false
     },
     {
       id: 'documentation',
-      title: 'Documentation',
+      title: 'Wealth Building Rate',
       type: 'item',
-      url: 'https://codedthemes.gitbook.io/berry/',
+      url: '#',
       icon: icons.IconHelp,
       external: true,
       target: true

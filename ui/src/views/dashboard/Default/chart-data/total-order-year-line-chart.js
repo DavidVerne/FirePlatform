@@ -7,7 +7,11 @@ const chartData = {
     chart: {
       sparkline: {
         enabled: true
-      }
+      },
+      toolbar: {
+        // show: true
+        show: false
+      },
     },
     dataLabels: {
       enabled: false
