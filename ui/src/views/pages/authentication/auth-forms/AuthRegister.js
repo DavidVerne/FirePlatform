@@ -29,6 +29,11 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// AWS Cognito packages
+import AWS from 'aws-sdk';
+import { CognitoUser, AuthenticationDetails, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+
+
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
@@ -56,6 +61,9 @@ const AuthRegister = ({ ...others }) => {
   useEffect(() => {
     changePassword('123456');
   }, []);
+
+  // AWS Cognito Variables
+  
 
   return (
     <>

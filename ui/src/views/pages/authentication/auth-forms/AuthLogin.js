@@ -29,15 +29,6 @@ const AuthLogin = ({ ...others }) => {
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
-  /********** TEST ************/
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [registered, setRegistered] = useState('');
-  /***************************/
-
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
