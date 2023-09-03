@@ -215,7 +215,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693755598425-2023-09-03T15:39:58.425Z/fireplatform.zip"
               },
               "Handler": "user/testpost.handler",
               "Runtime": "nodejs14.x",
@@ -250,7 +250,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693755598425-2023-09-03T15:39:58.425Z/fireplatform.zip"
               },
               "Handler": "user/login.handler",
               "Runtime": "nodejs14.x",
@@ -285,7 +285,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693755598425-2023-09-03T15:39:58.425Z/fireplatform.zip"
               },
               "Handler": "user/signup.handler",
               "Runtime": "nodejs14.x",
@@ -320,7 +320,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1693755598425-2023-09-03T15:39:58.425Z/fireplatform.zip"
               },
               "Handler": "user/private.handler",
               "Runtime": "nodejs14.x",
@@ -850,7 +850,7 @@
               ]
             }
           },
-          "ApiGatewayDeployment1693511283802": {
+          "ApiGatewayDeployment1693755596915": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1026,6 +1026,28 @@
               ],
               "AutoVerifiedAttributes": [
                 "email"
+              ],
+              "Schema": [
+                {
+                  "Name": "given_name",
+                  "AttributeDataType": "String",
+                  "Mutable": true
+                },
+                {
+                  "Name": "family_name",
+                  "AttributeDataType": "String",
+                  "Mutable": true
+                },
+                {
+                  "Name": "email",
+                  "AttributeDataType": "String",
+                  "Mutable": false
+                },
+                {
+                  "Name": "password",
+                  "AttributeDataType": "String",
+                  "Mutable": true
+                }
               ]
             }
           },
@@ -1385,6 +1407,28 @@
             ],
             "AutoVerifiedAttributes": [
               "email"
+            ],
+            "Schema": [
+              {
+                "Name": "given_name",
+                "AttributeDataType": "String",
+                "Mutable": true
+              },
+              {
+                "Name": "family_name",
+                "AttributeDataType": "String",
+                "Mutable": true
+              },
+              {
+                "Name": "email",
+                "AttributeDataType": "String",
+                "Mutable": false
+              },
+              {
+                "Name": "password",
+                "AttributeDataType": "String",
+                "Mutable": true
+              }
             ]
           }
         },
@@ -1426,7 +1470,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1693511291416-2023-08-31T19:48:11.416Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1693755598425-2023-09-03T15:39:58.425Z",
     "artifact": ""
   }
 }
