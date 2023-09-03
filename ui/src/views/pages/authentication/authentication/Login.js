@@ -1,24 +1,28 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
-
-// project imports
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
+import AuthRegister from '../auth-forms/AuthRegister';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
-// assets
 
-// ================================|| AUTH3 - LOGIN ||================================ //
-
-// CORRECT SIGN IN PAGE
+// ================================|| LOGIN / REGISTER ||================================ //
 
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+  /********** Login/Register Variables ************/
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [registered, setRegistered] = useState(false);
+  /***************************/
 
   return (
     <AuthWrapper1>
@@ -38,7 +42,7 @@ const Login = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Sign in
+                            {registered ? 'Sign in' : 'Sign up'}
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
                             Enter your credentials to continue
@@ -48,7 +52,7 @@ const Login = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLogin />
+                    {registered ? <AuthLogin /> : <AuthRegister />}
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
@@ -56,7 +60,7 @@ const Login = () => {
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
                       <Typography component={Link} to="/register/" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
+                        {registered ? 'Dont have an account' : 'Already have an account'}
                       </Typography>
                     </Grid>
                   </Grid>

@@ -7,7 +7,7 @@ import Logo from 'ui-component/Logo';
 import AuthRegister from '../auth-forms/AuthRegister';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 
-// CORRECT SIGN UP PAGE
+// ================================|| REGISTER ||================================ //
 
 const Register = () => {
   const theme = useTheme();
