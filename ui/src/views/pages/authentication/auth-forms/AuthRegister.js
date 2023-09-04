@@ -18,21 +18,15 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
-
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
-
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-// AWS Cognito packages
-import AWS from 'aws-sdk';
-import { CognitoUser, AuthenticationDetails, CognitoUserAttribute } from 'amazon-cognito-identity-js';
-
+import { CognitoUserAttribute, CognitoUserPool } from 'amazon-cognito-identity-js';
+// require('dotenv').config(); // Load .env variables
 
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
@@ -63,7 +57,58 @@ const AuthRegister = ({ ...others }) => {
   }, []);
 
   // AWS Cognito Variables
-  
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+  });
+
+  const handleCognitoChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({...formData, [name]: value });
+  };
+
+  const handleCognitoSignUp = (e) => {
+    e.preventDefault();
+  };
+
+  // Need to store these values in SM instead
+  const region = process.env.REACT_APP_REGION;
+  const poolId = process.env.REACT_APP_POOL_ID;
+  const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
+
+  const poolData = {
+    Region: region,
+    UserPoolId: poolId,
+    ClientId: appClientId
+  }
+
+  const userPool = new CognitoUserPool(poolData);
+
+  const attributeList = [
+    new CognitoUserAttribute({
+      Name: 'given_name',
+      Value: formData.firstName,
+    }),
+    new CognitoUserAttribute({
+      Name: 'family_name',
+      Value: formData.lastName,
+    }),
+    new CognitoUserAttribute({
+      Name: 'email',
+      Value: formData.email,
+    }),
+  ];
+
+  userPool.signUp(formData.email, formData.password, attributeList, null, (err, result) => {
+    if (err) {
+      console.error('Error signing up:', err);
+      } else {
+        const cognitoUser = result.user;
+        console.log('User signed up:', cognitoUser);
+      }
+    });
 
   return (
     <>
@@ -105,16 +150,19 @@ const AuthRegister = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
+          <form noValidate onSubmit={handleCognitoSignUp} {...others}>
             <Grid container spacing={matchDownSM ? 0 : 2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="First Name"
                   margin="normal"
-                  name="fname"
+                  name="firstName"
                   type="text"
                   defaultValue=""
+                  value={formData.firstName}
+                  onChange={handleCognitoChange}
+                  required
                   sx={{ ...theme.typography.customInput }}
                 />
               </Grid>
@@ -123,9 +171,12 @@ const AuthRegister = ({ ...others }) => {
                   fullWidth
                   label="Last Name"
                   margin="normal"
-                  name="lname"
+                  name="lastName"
                   type="text"
                   defaultValue=""
+                  value={formData.lastName}
+                  onChange={handleCognitoChange}
+                  required
                   sx={{ ...theme.typography.customInput }}
                 />
               </Grid>
@@ -135,10 +186,11 @@ const AuthRegister = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="email"
-                value={values.email}
                 name="email"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                value={formData.email}
+                onChange={handleCognitoChange}
+                required
                 inputProps={{}}
               />
               {touched.email && errors.email && (
@@ -153,14 +205,12 @@ const AuthRegister = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
-                value={values.password}
                 name="password"
                 label="Password"
                 onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e);
-                  changePassword(e.target.value);
-                }}
+                value={formData.password}
+                onChange={handleCognitoChange}
+                required
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

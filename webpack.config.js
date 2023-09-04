@@ -1,5 +1,6 @@
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
+const path = require("path");
 
 module.exports = {
   target: 'node',
@@ -16,4 +17,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    fallback: {
+      "path": require.resolve("path-browserify")
+    }
+  }
 };

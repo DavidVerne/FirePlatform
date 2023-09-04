@@ -22,6 +22,8 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+// require('dotenv').config(); // Load .env variables
 
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
@@ -35,6 +37,56 @@ const AuthLogin = ({ ...others }) => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleCognitoChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCognitoSubmit = (e) => {
+    e.preventDefault();
+
+  // Need to store these values in SM instead
+  const region = process.env.REACT_APP_REGION;
+  const poolId = process.env.REACT_APP_POOL_ID;
+  const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
+
+  const poolData = {
+    Region: region,
+    UserPoolId: poolId,
+    ClientId: appClientId
+  }
+
+  const userPool = new CognitoUserPool(poolData);
+
+  const authenticationData = {
+    Username: formData.email,
+    Password: formData.password,
+  };
+
+  const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+  const userData = {
+    Username: formData.email,
+    Pool: userPool,
+  };
+
+  const cognitoUser = new CognitoUser(userData);
+
+  cognitoUser.authenticateUser(authenticationDetails, {
+    onSuccess: (session) => {
+      console.log('User logged in:', session);
+      },
+      onFailure: (err) => {
+        console.error('Error logging in:', err);
+      },
+    });
   };
 
   return (
@@ -82,18 +134,19 @@ const AuthLogin = ({ ...others }) => {
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit} {...others}>
+          <form noValidate onSubmit={handleCognitoSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
-                value={values.email}
                 name="email"
+                value={formData.email}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleCognitoChange}
                 label="Email Address / Username"
                 inputProps={{}}
+                required
               />
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email-login">
@@ -107,10 +160,11 @@ const AuthLogin = ({ ...others }) => {
               <OutlinedInput
                 id="outlined-adornment-password-login"
                 type={showPassword ? 'text' : 'password'}
-                value={values.password}
+                value={formData.password}
                 name="password"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleCognitoChange}
+                required
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

@@ -1,5 +1,6 @@
 // import { CognitoUserPool } from 'amazon-cognito-identity-js';
 
+// DONT NEED ANYMORE
 const poolData = {
     Region: process.env.REGION,
     UserPoolId: process.env.POOL_ID,
