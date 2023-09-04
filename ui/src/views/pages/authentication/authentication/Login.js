@@ -3,12 +3,10 @@ import { useTheme } from '@mui/material/styles';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
-import AuthRegister from '../auth-forms/AuthRegister';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 
 import {
-  Button,
   Divider,
   Grid,
   Stack,
@@ -57,7 +55,7 @@ const Login = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to='/register' variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                      <Typography component={Link} to='/register/' variant="subtitle1" sx={{ textDecoration: 'none' }}>
                         Dont have an account
                       </Typography>
                     </Grid>
