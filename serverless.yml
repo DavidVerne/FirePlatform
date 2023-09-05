@@ -19,60 +19,17 @@ provider:
         - cognito-idp:AdminCreateUser
         - cognito-idp:AdminSetUserPassword
       Resource: "*"
-      
 plugins:
   - serverless-webpack
 
 functions:
-  testPost:
-    handler: user/testpost.handler
+  getCognitoUserPoolData:
+    handler: server/handlers/getCognitoUserPoolData.handler
     events:
       - http:
-          path: user/testpost
-          method: post
+          path: getCognitoUserPoolData
+          method: get
           cors: true
-
-  loginUser: 
-    handler: user/login.handler
-    package:
-      exclude:
-        - node_modules/**
-    events:
-      - http:
-          path: user/login
-          method: post
-          cors: true
-
-  signupUser: 
-    handler: user/signup.handler
-    package:
-      exclude:
-        - node_modules/**
-    events:
-      - http:
-          path: user/signup
-          method: post
-          cors: true
-
-  privateAPI:
-    handler: user/private.handler
-    package:
-      exclude:
-        - node_modules/**
-    events:
-      - http: 
-          path: user/private
-          method: post
-          cors: true
-          authorizer:
-            name: PrivateAuthorizer
-            type: COGNITO_USER_POOLS
-            arn:
-              Fn::GetAtt:
-                - CognitoUserPool
-                - Arn
-            claims:
-              - email
 
 # you can add CloudFormation resource templates here
 resources:
@@ -107,4 +64,18 @@ resources:
         ExplicitAuthFlows:
               - ADMIN_NO_SRP_AUTH
         GenerateSecret: false
+    LambdaExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: lambda-execution-role
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole    
 

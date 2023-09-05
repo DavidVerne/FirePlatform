@@ -74,15 +74,17 @@ const AuthRegister = ({ ...others }) => {
   };
 
   // Need to store these values in SM instead
-  const region = process.env.REACT_APP_REGION;
-  const poolId = process.env.REACT_APP_POOL_ID;
-  const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
+  /***************************** TEST **************************/
+  // const region = process.env.REACT_APP_REGION;
+  // const poolId = process.env.REACT_APP_POOL_ID;
+  // const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
 
-  const poolData = {
-    Region: region,
-    UserPoolId: poolId,
-    ClientId: appClientId
-  }
+  // const poolData = {
+  //   Region: region,
+  //   UserPoolId: poolId,
+  //   ClientId: appClientId
+  // }
+  /************************************************************/
 
   const userPool = new CognitoUserPool(poolData);
 
