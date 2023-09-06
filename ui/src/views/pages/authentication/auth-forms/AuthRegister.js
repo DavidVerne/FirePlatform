@@ -25,7 +25,6 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { CognitoUserAttribute, CognitoUserPool } from 'amazon-cognito-identity-js';
 import AWS from 'aws-sdk';
 
 const AuthRegister = ({ ...others }) => {

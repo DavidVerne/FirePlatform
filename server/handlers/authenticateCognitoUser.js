@@ -1,7 +1,7 @@
-// const AWS = require('aws-sdk');
-// const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-import AWS from 'aws-sdk';
-import AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+const AWS = require('aws-sdk');
+const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+// import AWS from 'aws-sdk';
+// import AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 exports.handler = async (event) => {
   // Get the username and password from the login form
