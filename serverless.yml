@@ -23,12 +23,19 @@ plugins:
   - serverless-webpack
 
 functions:
-  getCognitoUserPoolData:
-    handler: server/handlers/getCognitoUserPoolData.handler
+  authenticateCognitoUser:
+    handler: server/handlers/authenticateCognitoUser.handler
     events:
       - http:
-          path: getCognitoUserPoolData
-          method: get
+          path: authenticateCognitoUser
+          method: post
+          cors: true
+  createUserInCognito:
+    handler: server/handlers/createUserInCognito.handler
+    events:
+      - http:
+          path: createUserInCognito
+          method: post
           cors: true
 
 # you can add CloudFormation resource templates here

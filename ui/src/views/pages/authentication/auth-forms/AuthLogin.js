@@ -22,8 +22,7 @@ import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
-// require('dotenv').config(); // Load .env variables
+import axios from 'axios';
 
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
@@ -49,44 +48,32 @@ const AuthLogin = ({ ...others }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCognitoSubmit = (e) => {
+  const handleCognitoSubmit = async (e) => {
     e.preventDefault();
+    // check user against cognito
+    const username = e.target.username.value;
+  const password = e.target.password.value;
 
-  // Need to store these values in SM instead
-  const region = process.env.REACT_APP_REGION;
-  const poolId = process.env.REACT_APP_POOL_ID;
-  const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
+  try {
+    // Make an HTTP POST request to your Lambda function
+    const response = await axios.post(
+      'YOUR_LAMBDA_ENDPOINT_URL', // Replace with your Lambda's API Gateway endpoint URL
+      {
+        username,
+        password,
+      }
+    );
 
-  const poolData = {
-    Region: region,
-    UserPoolId: poolId,
-    ClientId: appClientId
+    // Handle the response from the Lambda function
+    if (response.status === 200) {
+      // Authentication successful, redirect or perform other actions
+    } else {
+      // Authentication failed, display an error message
+    }
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.error('Error:', error);
   }
-
-  const userPool = new CognitoUserPool(poolData);
-
-  const authenticationData = {
-    Username: formData.email,
-    Password: formData.password,
-  };
-
-  const authenticationDetails = new AuthenticationDetails(authenticationData);
-
-  const userData = {
-    Username: formData.email,
-    Pool: userPool,
-  };
-
-  const cognitoUser = new CognitoUser(userData);
-
-  cognitoUser.authenticateUser(authenticationDetails, {
-    onSuccess: (session) => {
-      console.log('User logged in:', session);
-      },
-      onFailure: (err) => {
-        console.error('Error logging in:', err);
-      },
-    });
   };
 
   return (

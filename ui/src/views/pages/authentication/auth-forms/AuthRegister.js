@@ -26,7 +26,7 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { CognitoUserAttribute, CognitoUserPool } from 'amazon-cognito-identity-js';
-// require('dotenv').config(); // Load .env variables
+import AWS from 'aws-sdk';
 
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
@@ -69,48 +69,39 @@ const AuthRegister = ({ ...others }) => {
     setFormData({...formData, [name]: value });
   };
 
-  const handleCognitoSignUp = (e) => {
+  const handleCognitoSignUp = async (e) => {
     e.preventDefault();
-  };
+    // add user to cognito
+    try {
+      const lambda = new AWS.Lambda();
 
-  // Need to store these values in SM instead
-  /***************************** TEST **************************/
-  // const region = process.env.REACT_APP_REGION;
-  // const poolId = process.env.REACT_APP_POOL_ID;
-  // const appClientId = process.env.REACT_APP_APP_CLIENT_ID;
-
-  // const poolData = {
-  //   Region: region,
-  //   UserPoolId: poolId,
-  //   ClientId: appClientId
-  // }
-  /************************************************************/
-
-  const userPool = new CognitoUserPool(poolData);
-
-  const attributeList = [
-    new CognitoUserAttribute({
-      Name: 'given_name',
-      Value: formData.firstName,
-    }),
-    new CognitoUserAttribute({
-      Name: 'family_name',
-      Value: formData.lastName,
-    }),
-    new CognitoUserAttribute({
-      Name: 'email',
-      Value: formData.email,
-    }),
-  ];
-
-  userPool.signUp(formData.email, formData.password, attributeList, null, (err, result) => {
-    if (err) {
-      console.error('Error signing up:', err);
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      };
+  
+      const params = {
+        FunctionName: 'createUserInCognito',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(payload),
+      };
+  
+      const response = await lambda.invoke(params).promise();
+  
+      const responseBody = JSON.parse(response.Payload);
+  
+      if (responseBody.success) {
+        // Redirect to a success page or show a success message
+        console.error('User registration successful:', responseBody.success);
       } else {
-        const cognitoUser = result.user;
-        console.log('User signed up:', cognitoUser);
+        console.error('User registration failed:', responseBody.error);
       }
-    });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <>

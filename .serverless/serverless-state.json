@@ -27,13 +27,6 @@
             "cognito-idp:AdminSetUserPassword"
           ],
           "Resource": "*"
-        },
-        {
-          "Effect": "Allow",
-          "Action": [
-            "secretsmanager:GetSecretValue"
-          ],
-          "Resource": "arn:aws:secretsmanager:eu-west-2:532127174245:secret:COGNITO_USER_POOL_DATA-*"
         }
       ],
       "versionFunctions": true,
@@ -110,10 +103,16 @@
               }
             }
           },
-          "GetCognitoUserPoolDataLogGroup": {
+          "AuthenticateCognitoUserLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/fireplatform-dev-getCognitoUserPoolData"
+              "LogGroupName": "/aws/lambda/fireplatform-dev-authenticateCognitoUser"
+            }
+          },
+          "CreateUserInCognitoLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/fireplatform-dev-createUserInCognito"
             }
           },
           "IamRoleLambdaExecution": {
@@ -176,9 +175,6 @@
                       },
                       {
                         "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][0]"
-                      },
-                      {
-                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][1]"
                       }
                     ]
                   }
@@ -200,18 +196,18 @@
               }
             }
           },
-          "GetCognitoUserPoolDataLambdaFunction": {
+          "AuthenticateCognitoUserLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1693926421946-2023-09-05T15:07:01.946Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z/fireplatform.zip"
               },
-              "Handler": "server/handlers/getCognitoUserPoolData.handler",
+              "Handler": "server/handlers/authenticateCognitoUser.handler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "fireplatform-dev-getCognitoUserPoolData",
+              "FunctionName": "fireplatform-dev-authenticateCognitoUser",
               "MemorySize": 1024,
               "Timeout": 6,
               "Environment": {
@@ -232,17 +228,62 @@
               }
             },
             "DependsOn": [
-              "GetCognitoUserPoolDataLogGroup"
+              "AuthenticateCognitoUserLogGroup"
             ]
           },
-          "GetCognitoUserPoolDataLambdaVersionV7tN71CGIQMlI1FkkrT1wg5QFzRStjssxIS3mElgDJk": {
+          "CreateUserInCognitoLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z/fireplatform.zip"
+              },
+              "Handler": "server/handlers/createUserInCognito.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "fireplatform-dev-createUserInCognito",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "user_pool_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"user_pool_id\"]"
+                  },
+                  "client_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"client_id\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "CreateUserInCognitoLogGroup"
+            ]
+          },
+          "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "GetCognitoUserPoolDataLambdaFunction"
+                "Ref": "AuthenticateCognitoUserLambdaFunction"
               },
-              "CodeSha256": "lPwy8tD7Ln3JW24+yDIFvj4Hji519w+zIQIKdVq3Ng4="
+              "CodeSha256": "ZCEUu8AvHAWhnlNSpxbSsxe4DKau/8RgJSMsnsm19pY="
+            }
+          },
+          "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateUserInCognitoLambdaFunction"
+              },
+              "CodeSha256": "ZCEUu8AvHAWhnlNSpxbSsxe4DKau/8RgJSMsnsm19pY="
             }
           },
           "ApiGatewayRestApi": {
@@ -257,7 +298,7 @@
               "Policy": ""
             }
           },
-          "ApiGatewayResourceGetcognitouserpooldata": {
+          "ApiGatewayResourceAuthenticatecognitouser": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
               "ParentId": {
@@ -266,13 +307,28 @@
                   "RootResourceId"
                 ]
               },
-              "PathPart": "getCognitoUserPoolData",
+              "PathPart": "authenticateCognitoUser",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodGetcognitouserpooldataOptions": {
+          "ApiGatewayResourceCreateuserincognito": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "createUserInCognito",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodAuthenticatecognitouserOptions": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
               "AuthorizationType": "NONE",
@@ -301,7 +357,7 @@
                     "ResponseParameters": {
                       "method.response.header.Access-Control-Allow-Origin": "'*'",
                       "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
                     },
                     "ResponseTemplates": {
                       "application/json": ""
@@ -310,20 +366,65 @@
                 ]
               },
               "ResourceId": {
-                "Ref": "ApiGatewayResourceGetcognitouserpooldata"
+                "Ref": "ApiGatewayResourceAuthenticatecognitouser"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
             }
           },
-          "ApiGatewayMethodGetcognitouserpooldataGet": {
+          "ApiGatewayMethodCreateuserincognitoOptions": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-              "HttpMethod": "GET",
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceCreateuserincognito"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodAuthenticatecognitouserPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
               "RequestParameters": {},
               "ResourceId": {
-                "Ref": "ApiGatewayResourceGetcognitouserpooldata"
+                "Ref": "ApiGatewayResourceAuthenticatecognitouser"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -348,7 +449,7 @@
                       ":lambda:path/2015-03-31/functions/",
                       {
                         "Fn::GetAtt": [
-                          "GetCognitoUserPoolDataLambdaFunction",
+                          "AuthenticateCognitoUserLambdaFunction",
                           "Arn"
                         ]
                       },
@@ -360,10 +461,56 @@
               "MethodResponses": []
             },
             "DependsOn": [
-              "GetCognitoUserPoolDataLambdaPermissionApiGateway"
+              "AuthenticateCognitoUserLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1693926416092": {
+          "ApiGatewayMethodCreateuserincognitoPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceCreateuserincognito"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateUserInCognitoLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateUserInCognitoLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1694006090997": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -372,16 +519,55 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodGetcognitouserpooldataOptions",
-              "ApiGatewayMethodGetcognitouserpooldataGet"
+              "ApiGatewayMethodAuthenticatecognitouserOptions",
+              "ApiGatewayMethodCreateuserincognitoOptions",
+              "ApiGatewayMethodAuthenticatecognitouserPost",
+              "ApiGatewayMethodCreateuserincognitoPost"
             ]
           },
-          "GetCognitoUserPoolDataLambdaPermissionApiGateway": {
+          "AuthenticateCognitoUserLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "GetCognitoUserPoolDataLambdaFunction",
+                  "AuthenticateCognitoUserLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateUserInCognitoLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateUserInCognitoLambdaFunction",
                   "Arn"
                 ]
               },
@@ -493,13 +679,22 @@
               "Name": "sls-fireplatform-dev-ServerlessDeploymentBucketName"
             }
           },
-          "GetCognitoUserPoolDataLambdaFunctionQualifiedArn": {
+          "AuthenticateCognitoUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetCognitoUserPoolDataLambdaVersionV7tN71CGIQMlI1FkkrT1wg5QFzRStjssxIS3mElgDJk"
+              "Ref": "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo"
             },
             "Export": {
-              "Name": "sls-fireplatform-dev-GetCognitoUserPoolDataLambdaFunctionQualifiedArn"
+              "Name": "sls-fireplatform-dev-AuthenticateCognitoUserLambdaFunctionQualifiedArn"
+            }
+          },
+          "CreateUserInCognitoLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ"
+            },
+            "Export": {
+              "Name": "sls-fireplatform-dev-CreateUserInCognitoLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -619,18 +814,18 @@
     ],
     "pluginsData": {},
     "functions": {
-      "getCognitoUserPoolData": {
-        "handler": "server/handlers/getCognitoUserPoolData.handler",
+      "authenticateCognitoUser": {
+        "handler": "server/handlers/authenticateCognitoUser.handler",
         "events": [
           {
             "http": {
-              "path": "getCognitoUserPoolData",
-              "method": "get",
+              "path": "authenticateCognitoUser",
+              "method": "post",
               "cors": {
                 "origin": "*",
                 "methods": [
                   "OPTIONS",
-                  "GET"
+                  "POST"
                 ],
                 "headers": [
                   "Content-Type",
@@ -647,7 +842,7 @@
             }
           }
         ],
-        "name": "fireplatform-dev-getCognitoUserPoolData",
+        "name": "fireplatform-dev-authenticateCognitoUser",
         "package": {
           "artifact": ".serverless/fireplatform.zip"
         },
@@ -655,7 +850,45 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "GetCognitoUserPoolDataLambdaVersionV7tN71CGIQMlI1FkkrT1wg5QFzRStjssxIS3mElgDJk"
+        "versionLogicalId": "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo"
+      },
+      "createUserInCognito": {
+        "handler": "server/handlers/createUserInCognito.handler",
+        "events": [
+          {
+            "http": {
+              "path": "createUserInCognito",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "fireplatform-dev-createUserInCognito",
+        "package": {
+          "artifact": ".serverless/fireplatform.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ"
       }
     },
     "resources": {
@@ -755,7 +988,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1693926421946-2023-09-05T15:07:01.946Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z",
     "artifact": ""
   }
 }
