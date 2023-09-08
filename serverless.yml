@@ -23,18 +23,32 @@ plugins:
   - serverless-webpack
 
 functions:
-  authenticateCognitoUser:
-    handler: server/handlers/authenticateCognitoUser.handler
+  loginUser:
+    handler: server/handlers/cognito/loginUser.handler
     events:
       - http:
-          path: authenticateCognitoUser
+          path: loginUser
           method: post
           cors: true
-  createUserInCognito:
-    handler: server/handlers/createUserInCognito.handler
+  registerUser:
+    handler: server/handlers/cognito/registerUser.handler
     events:
       - http:
-          path: createUserInCognito
+          path: registerUser
+          method: post
+          cors: true
+  authorizeUser:
+    handler: server/handlers/cognito/authorizeUser.handler
+    events:
+      - http:
+          path: authorizeUser
+          method: post
+          cors: true
+  resendConfirmationCode:
+    handler: server/handlers/cognito/resendConfirmationCode.handler
+    events:
+      - http:
+          path: resendConfirmationCode
           method: post
           cors: true
 

@@ -203,7 +203,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1694182411711-2023-09-08T14:13:31.711Z/fireplatform.zip"
               },
               "Handler": "server/handlers/authenticateCognitoUser.handler",
               "Runtime": "nodejs14.x",
@@ -238,7 +238,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1694182411711-2023-09-08T14:13:31.711Z/fireplatform.zip"
               },
               "Handler": "server/handlers/createUserInCognito.handler",
               "Runtime": "nodejs14.x",
@@ -266,24 +266,24 @@
               "CreateUserInCognitoLogGroup"
             ]
           },
-          "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo": {
+          "AuthenticateCognitoUserLambdaVersionICkpNa5WTEetUq2jdftbdsBgt5r6in1O9DbqNOvDss": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthenticateCognitoUserLambdaFunction"
               },
-              "CodeSha256": "ZCEUu8AvHAWhnlNSpxbSsxe4DKau/8RgJSMsnsm19pY="
+              "CodeSha256": "YxO6aj7UfM8HOT7nCREGS908MoP/+4e4WqbwGs4rLv0="
             }
           },
-          "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ": {
+          "CreateUserInCognitoLambdaVersionkef8eJ5L6MT1cJgro6MCCedqNabGgRdX56if1DqPo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateUserInCognitoLambdaFunction"
               },
-              "CodeSha256": "ZCEUu8AvHAWhnlNSpxbSsxe4DKau/8RgJSMsnsm19pY="
+              "CodeSha256": "YxO6aj7UfM8HOT7nCREGS908MoP/+4e4WqbwGs4rLv0="
             }
           },
           "ApiGatewayRestApi": {
@@ -510,7 +510,7 @@
               "CreateUserInCognitoLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1694006090997": {
+          "ApiGatewayDeployment1694182410531": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -682,7 +682,7 @@
           "AuthenticateCognitoUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo"
+              "Ref": "AuthenticateCognitoUserLambdaVersionICkpNa5WTEetUq2jdftbdsBgt5r6in1O9DbqNOvDss"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-AuthenticateCognitoUserLambdaFunctionQualifiedArn"
@@ -691,7 +691,7 @@
           "CreateUserInCognitoLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ"
+              "Ref": "CreateUserInCognitoLambdaVersionkef8eJ5L6MT1cJgro6MCCedqNabGgRdX56if1DqPo"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-CreateUserInCognitoLambdaFunctionQualifiedArn"
@@ -850,7 +850,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AuthenticateCognitoUserLambdaVersionZN61zv1vG2qBRscfW37RrEihKq9Dvxo6ttYPsIxabo"
+        "versionLogicalId": "AuthenticateCognitoUserLambdaVersionICkpNa5WTEetUq2jdftbdsBgt5r6in1O9DbqNOvDss"
       },
       "createUserInCognito": {
         "handler": "server/handlers/createUserInCognito.handler",
@@ -888,7 +888,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "CreateUserInCognitoLambdaVersion6MooJsFQLkrR8BcnT8nHe8STwcDanKJvA4AIpZtCQ"
+        "versionLogicalId": "CreateUserInCognitoLambdaVersionkef8eJ5L6MT1cJgro6MCCedqNabGgRdX56if1DqPo"
       }
     },
     "resources": {
@@ -988,7 +988,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1694006092388-2023-09-06T13:14:52.388Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1694182411711-2023-09-08T14:13:31.711Z",
     "artifact": ""
   }
 }

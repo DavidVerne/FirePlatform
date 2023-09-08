@@ -82,7 +82,7 @@ const AuthRegister = ({ ...others }) => {
       };
   
       const params = {
-        FunctionName: 'createUserInCognito',
+        FunctionName: 'registerUserInCognito',
         InvocationType: 'RequestResponse',
         Payload: JSON.stringify(payload),
       };
