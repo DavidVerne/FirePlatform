@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-// import AWS from 'aws-sdk';
 
 exports.handler = async (event, context) => {
   // Parse user input from the event (assuming it's in JSON format)
@@ -11,9 +10,9 @@ exports.handler = async (event, context) => {
   const clientId = process.env.client_id; // Retrieve Client ID from environment variables
 
   const params = {
-    UserPoolId: userPoolId,
+    ClientId: clientId,
+    Password: userInput.password, // Include the user's chosen password here
     Username: userInput.email,
-    // Password: userInput.password,
     UserAttributes: [
       {
         Name: 'given_name',
@@ -29,26 +28,25 @@ exports.handler = async (event, context) => {
       },
       // Add other user attributes as needed
     ],
-    DesiredDeliveryMediums: ['EMAIL'],
-    ForceAliasCreation: false,
   };
 
   try {
-    // Create the user in the Cognito User Pool
-    const response = await cognito.adminCreateUser(params).promise();
+    // Sign up the user using the SignUp API
+    const response = await cognito.signUp(params).promise();
 
-    // User created successfully
+    // User signed up successfully
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'User created successfully', user: response }),
+      body: JSON.stringify({ message: 'User signed up successfully', user: response }),
     };
   } catch (error) {
-    console.error('Error creating user:', error);
+    console.error('Error signing up user:', error);
 
     // Handle errors and return an appropriate response
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'User creation failed' }),
+      body: JSON.stringify({ error: 'User sign-up failed' }),
     };
   }
 };
+
