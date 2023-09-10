@@ -76,9 +76,6 @@ resources:
           - Name: password
             AttributeDataType: String
             Mutable: true
-        EmailVerificationSubject: Verification link for Fire Platform
-        EmailVerificationMessage: Please click the link below to verify your email address. {##Verify Email##}
-        EmailVerificationMessageType: LINK
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
