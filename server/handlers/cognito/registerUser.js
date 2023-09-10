@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
   const params = {
     UserPoolId: userPoolId,
     Username: userInput.email,
-    Password: userInput.password,
+    // Password: userInput.password,
     UserAttributes: [
       {
         Name: 'given_name',
