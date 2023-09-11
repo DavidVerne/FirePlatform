@@ -14,26 +14,24 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
   Typography,
   useMediaQuery
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
 
+// ===========================|| REGISTER ||=========================== //
+
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
-
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
@@ -63,126 +61,140 @@ const AuthRegister = ({ ...others }) => {
     password: '',
   });
 
-  const handleCognitoChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+    if (name === 'password')
+    changePassword(value);
   };
 
+  // Signup user in Cognito
   const handleCognitoSignUp = async (e) => {
-    e.preventDefault();
-    // add user to cognito
-    try {
-      const lambda = new AWS.Lambda();
-
-      const payload = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
+        e.preventDefault();
+        // add user to cognito
+        console.log('formData: ', formData)
+        try {
+          // const lambda = new AWS.Lambda({ region: 'eu-west-2'});
+          const lambda = new AWS.Lambda();
+    
+          const payload = {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            password: formData.password,
+          };
+      
+          const params = {
+            FunctionName: 'registerUserInCognito',
+            InvocationType: 'RequestResponse',
+            Payload: JSON.stringify(payload),
+          };
+      
+          const response = await lambda.invoke(params).promise();
+      
+          const responseBody = JSON.parse(response.Payload);
+      
+          if (responseBody.success) {
+            // Redirect to a success page or show a success message
+            console.error('User registration successful:', responseBody.success);
+          } else {
+            console.error('User registration failed:', responseBody.error);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
       };
-  
-      const params = {
-        FunctionName: 'registerUserInCognito',
-        InvocationType: 'RequestResponse',
-        Payload: JSON.stringify(payload),
-      };
-  
-      const response = await lambda.invoke(params).promise();
-  
-      const responseBody = JSON.parse(response.Payload);
-  
-      if (responseBody.success) {
-        // Redirect to a success page or show a success message
-        console.error('User registration successful:', responseBody.success);
-      } else {
-        console.error('User registration failed:', responseBody.error);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
 
   return (
     <>
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <Box sx={{ alignItems: 'center', display: 'flex' }}>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
+             <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
           </Box>
-        </Grid>
-        <Grid item xs={12} container alignItems="center" justifyContent="center">
-        </Grid>
-      </Grid>
-
+         </Grid>
+         <Grid item xs={12} container alignItems="center" justifyContent="center">
+       </Grid>
+       </Grid>
       <Formik
         initialValues={{
+          firstName: '',
+          lastName: '',
           email: '',
           password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
+          firstName: Yup.string().required('First Name is required'),
+          lastName: Yup.string().required('Last Name is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleCognitoSignUp} {...others}>
             <Grid container spacing={matchDownSM ? 0 : 2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  margin="normal"
-                  name="firstName"
-                  type="text"
-                  defaultValue=""
-                  value={formData.firstName}
-                  onChange={handleCognitoChange}
-                  required
-                  sx={{ ...theme.typography.customInput }}
-                />
+              <FormControl fullWidth error={Boolean(touched.firstName && errors.firstName)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-firstName-register">First Name</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-firstName-register"
+                type="text"
+                value={values.firstName}
+                name="firstName"
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  handleChange(e); 
+                  handleInputChange(e);
+                }}
+                inputProps={{}}
+              />
+              {touched.firstName && errors.firstName && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.firstName}
+                </FormHelperText>
+              )}
+            </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  margin="normal"
-                  name="lastName"
-                  type="text"
-                  defaultValue=""
-                  value={formData.lastName}
-                  onChange={handleCognitoChange}
-                  required
-                  sx={{ ...theme.typography.customInput }}
-                />
+              <FormControl fullWidth error={Boolean(touched.lastName && errors.lastName)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-firstName-register">Last Name</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-lastName-register"
+                type="text"
+                value={values.lastName}
+                name="lastName"
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  handleChange(e); 
+                  handleInputChange(e);
+                }}
+                inputProps={{}}
+              />
+              {touched.lastName && errors.lastName && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.lastName}
+                </FormHelperText>
+              )}
+            </FormControl>
               </Grid>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-register">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="email"
+                value={values.email}
                 name="email"
                 onBlur={handleBlur}
-                value={formData.email}
-                onChange={handleCognitoChange}
-                required
+                onChange={(e) => {
+                  handleChange(e); 
+                  handleInputChange(e);
+                }}
                 inputProps={{}}
               />
               {touched.email && errors.email && (
@@ -191,18 +203,19 @@ const AuthRegister = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
+                value={values.password}
                 name="password"
                 label="Password"
                 onBlur={handleBlur}
-                value={formData.password}
-                onChange={handleCognitoChange}
-                required
+                onChange={(e) => {
+                  handleChange(e); 
+                  handleInputChange(e);
+                }}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -224,7 +237,6 @@ const AuthRegister = ({ ...others }) => {
                 </FormHelperText>
               )}
             </FormControl>
-
             {strength !== 0 && (
               <FormControl fullWidth>
                 <Box sx={{ mb: 2 }}>
@@ -241,7 +253,6 @@ const AuthRegister = ({ ...others }) => {
                 </Box>
               </FormControl>
             )}
-
             <Grid container alignItems="center" justifyContent="space-between">
               <Grid item>
                 <FormControlLabel
@@ -264,7 +275,6 @@ const AuthRegister = ({ ...others }) => {
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">

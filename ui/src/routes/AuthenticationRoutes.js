@@ -5,8 +5,9 @@ import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
 
 // login option 3 routing
-const AuthLogin = Loadable(lazy(() => import('views/pages/authentication/authentication/Login')));
-const AuthRegister = Loadable(lazy(() => import('views/pages/authentication/authentication/Register')));
+const Login = Loadable(lazy(() => import('views/pages/authentication/authentication/Login')));
+const Register = Loadable(lazy(() => import('views/pages/authentication/authentication/Register')));
+const Authorize = Loadable(lazy(() => import('views/pages/authentication/authentication/Authorize')));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -16,11 +17,15 @@ const AuthenticationRoutes = {
   children: [
     {
       path: '/login',
-      element: <AuthLogin />
+      element: <Login />
     },
     {
       path: '/register',
-      element: <AuthRegister />
+      element: <Register />
+    },
+    {
+      path: '/authorize',
+      element: <Authorize />
     }
   ]
 };

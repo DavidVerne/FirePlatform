@@ -28,6 +28,10 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
+      path: '/dashboard',
+      element: <DashboardDefault />
+    },
+    {
       path: 'dashboard',
       children: [
         {

@@ -14,7 +14,7 @@ import {
   useMediaQuery
 } from '@mui/material';
 
-// ================================|| LOGIN / REGISTER ||================================ //
+// ================================|| LOGIN ||================================ //
 
 const Login = () => {
   const theme = useTheme();
