@@ -44,11 +44,11 @@ functions:
           path: authorizeUser
           method: post
           cors: true
-  resendConfirmationCode:
-    handler: server/handlers/cognito/resendConfirmationCode.handler
+  resendVerificationCode:
+    handler: server/handlers/cognito/resendVerificationCode.handler
     events:
       - http:
-          path: resendConfirmationCode
+          path: resendVerificationCode
           method: post
           cors: true
 
