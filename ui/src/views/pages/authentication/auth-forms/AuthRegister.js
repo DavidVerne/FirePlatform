@@ -24,6 +24,8 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
+import { useDispatch } from 'react-redux';
+import { setUsername } from '../../../../redux/userActions'
 
 // ===========================|| REGISTER ||=========================== //
 
@@ -43,14 +45,14 @@ const AuthRegister = ({ ...others }) => {
     event.preventDefault();
   };
 
-  const changePassword = (value) => {
+  const showPasswordStrength = (value) => {
     const temp = strengthIndicator(value);
     setStrength(temp);
     setLevel(strengthColor(temp));
   };
 
   useEffect(() => {
-    changePassword('123456');
+    showPasswordStrength('123456');
   }, []);
 
   // AWS Cognito Variables
@@ -61,14 +63,19 @@ const AuthRegister = ({ ...others }) => {
     password: '',
   });
 
+  // Redux
+  const dispatch = useDispatch();
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
+    if (name === 'email')
+    dispatch(setUsername(value))
     if (name === 'password')
-    changePassword(value);
+    showPasswordStrength(value);
   };
 
   // Signup user in Cognito
