@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 
 exports.handler = async (event, context) => {
-  const userInput = JSON.parse(response.Payload);
+  const userInput = JSON.parse(event.body);
   // const { username, verificationCode } = event; // Assuming you pass the username and confirmationCode as input
 
   const cognito = new AWS.CognitoIdentityServiceProvider();

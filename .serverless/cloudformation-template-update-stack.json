@@ -89,10 +89,10 @@
         "LogGroupName": "/aws/lambda/fireplatform-dev-authorizeUser"
       }
     },
-    "ResendConfirmationCodeLogGroup": {
+    "ResendVerificationCodeLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/fireplatform-dev-resendConfirmationCode"
+        "LogGroupName": "/aws/lambda/fireplatform-dev-resendVerificationCode"
       }
     },
     "IamRoleLambdaExecution": {
@@ -189,7 +189,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1694361399447-2023-09-10T15:56:39.447Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1695575391971-2023-09-24T17:09:51.971Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/loginUser.handler",
         "Runtime": "nodejs14.x",
@@ -224,7 +224,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1694361399447-2023-09-10T15:56:39.447Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1695575391971-2023-09-24T17:09:51.971Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/registerUser.handler",
         "Runtime": "nodejs14.x",
@@ -259,7 +259,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1694361399447-2023-09-10T15:56:39.447Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1695575391971-2023-09-24T17:09:51.971Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/authorizeUser.handler",
         "Runtime": "nodejs14.x",
@@ -287,18 +287,18 @@
         "AuthorizeUserLogGroup"
       ]
     },
-    "ResendConfirmationCodeLambdaFunction": {
+    "ResendVerificationCodeLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1694361399447-2023-09-10T15:56:39.447Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1695575391971-2023-09-24T17:09:51.971Z/fireplatform.zip"
         },
-        "Handler": "server/handlers/cognito/resendConfirmationCode.handler",
+        "Handler": "server/handlers/cognito/resendVerificationCode.handler",
         "Runtime": "nodejs14.x",
-        "FunctionName": "fireplatform-dev-resendConfirmationCode",
+        "FunctionName": "fireplatform-dev-resendVerificationCode",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
@@ -319,47 +319,47 @@
         }
       },
       "DependsOn": [
-        "ResendConfirmationCodeLogGroup"
+        "ResendVerificationCodeLogGroup"
       ]
     },
-    "LoginUserLambdaVersionVcpaww4TepeYn5nImXBs2ChLNiOkTaOyXXFEXZLLs": {
+    "LoginUserLambdaVersionDpLBDWm9rHZClBMgbYhK3eqdrLRB9POOfyZz8S3He0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginUserLambdaFunction"
         },
-        "CodeSha256": "c9fKazRGq6YmmVWDWlZCRO4eeeD88FU9m7Vaac+XwOc="
+        "CodeSha256": "SVLr6E2nRaNV+JqvmF64HYuOFihaleueko11xMoJ7+Y="
       }
     },
-    "RegisterUserLambdaVersionzLPTd2ytKEoy4ekP9Vb8qQ1uMRDoA0eauQl8AXT2BQ": {
+    "RegisterUserLambdaVersioniwdIXqMEv41wXM06LZtSOlGpuQMk8uU3TBrIIISEUk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RegisterUserLambdaFunction"
         },
-        "CodeSha256": "c9fKazRGq6YmmVWDWlZCRO4eeeD88FU9m7Vaac+XwOc="
+        "CodeSha256": "SVLr6E2nRaNV+JqvmF64HYuOFihaleueko11xMoJ7+Y="
       }
     },
-    "AuthorizeUserLambdaVersion4z5HHe7RvDcsin9EoolFA8bBigMDQS8RGwPyA7Ng": {
+    "AuthorizeUserLambdaVersiontEevX9FgTj8cJxPKrKoXRCIYY3eCbM1ev3aXe96A": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthorizeUserLambdaFunction"
         },
-        "CodeSha256": "c9fKazRGq6YmmVWDWlZCRO4eeeD88FU9m7Vaac+XwOc="
+        "CodeSha256": "SVLr6E2nRaNV+JqvmF64HYuOFihaleueko11xMoJ7+Y="
       }
     },
-    "ResendConfirmationCodeLambdaVersionlz1v5hHrkRF29RIGLfmWK5bRz9UNiyxI6NzdVEyS8": {
+    "ResendVerificationCodeLambdaVersioncbBTT5oCdjnxvaviV4zQWaJilMAITqXfofVKX2ol4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "ResendConfirmationCodeLambdaFunction"
+          "Ref": "ResendVerificationCodeLambdaFunction"
         },
-        "CodeSha256": "c9fKazRGq6YmmVWDWlZCRO4eeeD88FU9m7Vaac+XwOc="
+        "CodeSha256": "SVLr6E2nRaNV+JqvmF64HYuOFihaleueko11xMoJ7+Y="
       }
     },
     "ApiGatewayRestApi": {
@@ -419,7 +419,7 @@
         }
       }
     },
-    "ApiGatewayResourceResendconfirmationcode": {
+    "ApiGatewayResourceResendverificationcode": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -428,7 +428,7 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "resendConfirmationCode",
+        "PathPart": "resendVerificationCode",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -569,7 +569,7 @@
         }
       }
     },
-    "ApiGatewayMethodResendconfirmationcodeOptions": {
+    "ApiGatewayMethodResendverificationcodeOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -607,7 +607,7 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceResendconfirmationcode"
+          "Ref": "ApiGatewayResourceResendverificationcode"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -752,13 +752,13 @@
         "AuthorizeUserLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayMethodResendconfirmationcodePost": {
+    "ApiGatewayMethodResendverificationcodePost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceResendconfirmationcode"
+          "Ref": "ApiGatewayResourceResendverificationcode"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -783,7 +783,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "ResendConfirmationCodeLambdaFunction",
+                    "ResendVerificationCodeLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -795,10 +795,10 @@
         "MethodResponses": []
       },
       "DependsOn": [
-        "ResendConfirmationCodeLambdaPermissionApiGateway"
+        "ResendVerificationCodeLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1694361393006": {
+    "ApiGatewayDeployment1695575390808": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -810,11 +810,11 @@
         "ApiGatewayMethodLoginuserOptions",
         "ApiGatewayMethodRegisteruserOptions",
         "ApiGatewayMethodAuthorizeuserOptions",
-        "ApiGatewayMethodResendconfirmationcodeOptions",
+        "ApiGatewayMethodResendverificationcodeOptions",
         "ApiGatewayMethodLoginuserPost",
         "ApiGatewayMethodRegisteruserPost",
         "ApiGatewayMethodAuthorizeuserPost",
-        "ApiGatewayMethodResendconfirmationcodePost"
+        "ApiGatewayMethodResendverificationcodePost"
       ]
     },
     "LoginUserLambdaPermissionApiGateway": {
@@ -928,12 +928,12 @@
         }
       }
     },
-    "ResendConfirmationCodeLambdaPermissionApiGateway": {
+    "ResendVerificationCodeLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "ResendConfirmationCodeLambdaFunction",
+            "ResendVerificationCodeLambdaFunction",
             "Arn"
           ]
         },
@@ -1048,7 +1048,7 @@
     "LoginUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginUserLambdaVersionVcpaww4TepeYn5nImXBs2ChLNiOkTaOyXXFEXZLLs"
+        "Ref": "LoginUserLambdaVersionDpLBDWm9rHZClBMgbYhK3eqdrLRB9POOfyZz8S3He0"
       },
       "Export": {
         "Name": "sls-fireplatform-dev-LoginUserLambdaFunctionQualifiedArn"
@@ -1057,7 +1057,7 @@
     "RegisterUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RegisterUserLambdaVersionzLPTd2ytKEoy4ekP9Vb8qQ1uMRDoA0eauQl8AXT2BQ"
+        "Ref": "RegisterUserLambdaVersioniwdIXqMEv41wXM06LZtSOlGpuQMk8uU3TBrIIISEUk"
       },
       "Export": {
         "Name": "sls-fireplatform-dev-RegisterUserLambdaFunctionQualifiedArn"
@@ -1066,19 +1066,19 @@
     "AuthorizeUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthorizeUserLambdaVersion4z5HHe7RvDcsin9EoolFA8bBigMDQS8RGwPyA7Ng"
+        "Ref": "AuthorizeUserLambdaVersiontEevX9FgTj8cJxPKrKoXRCIYY3eCbM1ev3aXe96A"
       },
       "Export": {
         "Name": "sls-fireplatform-dev-AuthorizeUserLambdaFunctionQualifiedArn"
       }
     },
-    "ResendConfirmationCodeLambdaFunctionQualifiedArn": {
+    "ResendVerificationCodeLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ResendConfirmationCodeLambdaVersionlz1v5hHrkRF29RIGLfmWK5bRz9UNiyxI6NzdVEyS8"
+        "Ref": "ResendVerificationCodeLambdaVersioncbBTT5oCdjnxvaviV4zQWaJilMAITqXfofVKX2ol4"
       },
       "Export": {
-        "Name": "sls-fireplatform-dev-ResendConfirmationCodeLambdaFunctionQualifiedArn"
+        "Name": "sls-fireplatform-dev-ResendVerificationCodeLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
