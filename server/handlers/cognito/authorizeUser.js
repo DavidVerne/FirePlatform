@@ -3,14 +3,15 @@
 const AWS = require('aws-sdk');
 
 exports.handler = async (event, context) => {
-  const { username, verificationCode } = event; // Assuming you pass the username and confirmationCode as input
+  const userInput = JSON.parse(response.Payload);
+  // const { username, verificationCode } = event; // Assuming you pass the username and confirmationCode as input
 
   const cognito = new AWS.CognitoIdentityServiceProvider();
 
   const params = {
     ClientId: process.env.client_id, // Retrieve Client ID from environment variables
-    Username: username,
-    ConfirmationCode: verificationCode,
+    Username: userInput.username,
+    ConfirmationCode: userInput.verificationCode,
   };
 
   try {

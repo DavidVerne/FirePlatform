@@ -26,16 +26,37 @@ import { Formik } from 'formik';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import AWS from 'aws-sdk';
 import './AuthAuthorize.scss';
+import { Link } from 'react-router-dom';
+// import { connect } from 'react-redux';
 
 // ===========================|| AUTHORIZE ||=========================== //
 
-const AuthRegister = ({ ...others }) => {
+// const AuthRegister = ({ username, ...others }) => {
+  const AuthAuthorize = ({ ...others }) => {
+
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
+  // success message from lambda
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  // get email from cookie
+  const getSessionEmail = () => {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'username') {
+        return value;
+      }
+    }
+    return null;
+  };
+
+  const storedEmail = getSessionEmail();
+
   // AWS Cognito Variables
   const [formData, setFormData] = useState({
-    username: 'email',
+    username: storedEmail,
     verificationCode: '',
   });
 
@@ -58,7 +79,7 @@ const AuthRegister = ({ ...others }) => {
       FunctionName: lambdaFunctionName,
       InvocationType: 'RequestResponse', // Or 'Event' for asynchronous invocation
       Payload: JSON.stringify({  // Your input data
-        username: formData.username,      // Replace with the username
+        username: formData.username,      
         verificationCode: formData.verificationCode // Replace with the confirmation code
       }),
     };
@@ -72,12 +93,22 @@ const AuthRegister = ({ ...others }) => {
       console.log('Lambda response:', responseBody);
   
       // Additional handling based on the Lambda response...
-  
+      if (responseBody.success) {
+        // Set the success message
+        setSuccessMessage(
+          <>
+            Authorization successful. You can now{' '}
+            <Link to="/login">log in</Link>.
+          </>
+        );
+      } else {
+        // Handle other cases or display an error message
+        setSuccessMessage('Authorization failed. Please request a new verification code.');
+      }
     } catch (error) {
       console.error('Error invoking Lambda:', error);
-      // Handle errors here...
     }
-      };
+  };
 
   return (
     <>
@@ -157,8 +188,18 @@ const AuthRegister = ({ ...others }) => {
           </form>
         )}
       </Formik>
+      {successMessage && (
+        <div className="success-message">
+          {successMessage}
+        </div>
+      )}
     </>
   );
 };
 
-export default AuthRegister;
+// const mapStateToProps = (state) => ({
+//   username: state.user.username,
+// });
+
+// export default connect(mapStateToProps)(AuthRegister);
+export default AuthAuthorize;

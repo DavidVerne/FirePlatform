@@ -24,8 +24,10 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
-import { useDispatch } from 'react-redux';
-import { setUsername } from '../../../../redux/userActions'
+import { useNavigate } from 'react-router-dom';
+// import { connect } from 'react-redux';
+// import { setUsername } from '../../../../redux/userActions';
+// import { useDispatch } from 'react-redux';
 
 // ===========================|| REGISTER ||=========================== //
 
@@ -36,6 +38,7 @@ const AuthRegister = ({ ...others }) => {
   const [checked, setChecked] = useState(true);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
+  // const [username, setUsername] = useState('');
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -64,7 +67,7 @@ const AuthRegister = ({ ...others }) => {
   });
 
   // Redux
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,17 +75,28 @@ const AuthRegister = ({ ...others }) => {
       ...prevFormData,
       [name]: value,
     }));
-    if (name === 'email')
-    dispatch(setUsername(value))
+    // if (name === 'email')
+    // dispatch(setUsername(value));
     if (name === 'password')
     showPasswordStrength(value);
   };
 
+  // store email as session cookie
+  const setSessionCookie = (email) => {
+    const expirationDate = new Date();
+    expirationDate.setHours(expirationDate.getHours() + 1);
+    const cookieString = `username=${email}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = cookieString;
+  }
+
+  // take user to authorize page
+  const navigate = useNavigate();
+
   // Signup user in Cognito
   const handleCognitoSignUp = async (e) => {
         e.preventDefault();
-        // add user to cognito
-        console.log('formData: ', formData)
+        // set cookie
+        setSessionCookie(formData.email);
         try {
           // const lambda = new AWS.Lambda({ region: 'eu-west-2'});
           const lambda = new AWS.Lambda();
@@ -101,11 +115,33 @@ const AuthRegister = ({ ...others }) => {
           };
       
           const response = await lambda.invoke(params).promise();
-      
+
+          // API GATEWAY
+          // const apiEndpoint = 'https://x5i2g8uwzd.execute-api.eu-west-2.amazonaws.com/dev';
+          // const requestData = {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: params.Payload,
+          // };
+          // fetch(apiEndpoint, requestData)
+          //   .then((response) => {
+          //     if (!response.ok) {
+          //       throw new Error('Network response was not ok');
+          //     }
+          //     return response.json();
+          //   })
+          //   .then((responseData) => {
+          //     console.log('API Response:', responseData);
+          //   })
+          //   .catch((error) => {
+          //     console.error('API Error:', error);
+          //   });
+
           const responseBody = JSON.parse(response.Payload);
       
           if (responseBody.success) {
-            // Redirect to a success page or show a success message
             console.error('User registration successful:', responseBody.success);
           } else {
             console.error('User registration failed:', responseBody.error);
@@ -113,6 +149,7 @@ const AuthRegister = ({ ...others }) => {
         } catch (error) {
           console.error('Error:', error);
         }
+        navigate('/authorize');
       };
 
   return (
@@ -284,7 +321,16 @@ const AuthRegister = ({ ...others }) => {
             )}
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+              <Button
+                disableElevation
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="secondary"
+                // onClick={handleSignUpClick}
+              >
                   Sign up
                 </Button>
               </AnimateButton>
@@ -296,4 +342,5 @@ const AuthRegister = ({ ...others }) => {
   );
 };
 
+// export default connect(null, { setUsername })(AuthRegister);
 export default AuthRegister;

@@ -4,7 +4,7 @@ const initialState = {
     username: '',
 };
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USERNAME:
             return {
