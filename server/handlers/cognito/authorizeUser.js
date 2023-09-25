@@ -7,9 +7,10 @@ exports.handler = async (event, context) => {
   // const { username, verificationCode } = event; // Assuming you pass the username and confirmationCode as input
 
   const cognito = new AWS.CognitoIdentityServiceProvider();
+  const clientId = process.env.client_id; // Retrieve Client ID from environment variables
 
   const params = {
-    ClientId: process.env.client_id, // Retrieve Client ID from environment variables
+    ClientId: clientId,
     Username: userInput.username,
     ConfirmationCode: userInput.verificationCode,
   };
