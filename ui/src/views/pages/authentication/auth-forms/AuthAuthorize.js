@@ -1,13 +1,3 @@
-// User enters confirmation code from email
-// Invokes authorizeUserInCognito lamdba
-// Lambda passes code to Cognito
-
-
-// ALSO
-
-// If response from Congito is 'success'
-// Then show success message with login button to user
-// login button takes user to login page
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
@@ -27,12 +17,11 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import AWS from 'aws-sdk';
 import './AuthAuthorize.scss';
 import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 // ===========================|| AUTHORIZE ||=========================== //
 
-// const AuthRegister = ({ username, ...others }) => {
-  const AuthAuthorize = ({ ...others }) => {
+const AuthAuthorize = ({ username, ...others }) => {
 
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -40,23 +29,9 @@ import { Link } from 'react-router-dom';
   // success message from lambda
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // get email from cookie
-  const getSessionEmail = () => {
-    const cookies = document.cookie.split(';');
-    for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split('=');
-      if (name === 'username') {
-        return value;
-      }
-    }
-    return null;
-  };
-
-  const storedEmail = getSessionEmail();
-
   // AWS Cognito Variables
   const [formData, setFormData] = useState({
-    username: storedEmail,
+    username: username,
     verificationCode: '',
   });
 
@@ -68,19 +43,18 @@ import { Link } from 'react-router-dom';
     }));
   };
 
-  // Signup user in Cognito
+  // Authorize user in Cognito
   const handleAuthorization = async (e) => {
     e.preventDefault();
   
-    // Construct the input parameters for your Lambda function
     const lambda = new AWS.Lambda();
-    const lambdaFunctionName = 'authorizeUser'; // Replace with your Lambda function's name
+    const lambdaFunctionName = 'authorizeUser'; 
     const params = {
       FunctionName: lambdaFunctionName,
-      InvocationType: 'RequestResponse', // Or 'Event' for asynchronous invocation
-      Payload: JSON.stringify({  // Your input data
+      InvocationType: 'RequestResponse', 
+      Payload: JSON.stringify({  
         username: formData.username,      
-        verificationCode: formData.verificationCode // Replace with the confirmation code
+        verificationCode: formData.verificationCode 
       }),
     };
   
@@ -90,7 +64,6 @@ import { Link } from 'react-router-dom';
       
       // Handle the Lambda function response here
       const responseBody = JSON.parse(response.Payload);
-      console.log('Lambda response:', responseBody);
   
       // Additional handling based on the Lambda response...
       if (responseBody.success) {
@@ -197,9 +170,8 @@ import { Link } from 'react-router-dom';
   );
 };
 
-// const mapStateToProps = (state) => ({
-//   username: state.user.username,
-// });
+const mapStateToProps = (state) => ({
+  username: state.user.username,
+});
 
-// export default connect(mapStateToProps)(AuthRegister);
-export default AuthAuthorize;
+export default connect(mapStateToProps)(AuthAuthorize);

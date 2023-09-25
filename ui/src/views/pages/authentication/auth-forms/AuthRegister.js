@@ -25,9 +25,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
 import { useNavigate } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { setUsername } from '../../../../redux/userActions';
-// import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { setUsername } from '../../../../store/actions';
+import { useDispatch } from 'react-redux';
 
 // ===========================|| REGISTER ||=========================== //
 
@@ -38,7 +38,6 @@ const AuthRegister = ({ ...others }) => {
   const [checked, setChecked] = useState(true);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
-  // const [username, setUsername] = useState('');
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -66,39 +65,30 @@ const AuthRegister = ({ ...others }) => {
     password: '',
   });
 
-  // Redux
-  // const dispatch = useDispatch();
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
-    // if (name === 'email')
-    // dispatch(setUsername(value));
     if (name === 'password')
     showPasswordStrength(value);
   };
 
-  // store email as session cookie
-  const setSessionCookie = (email) => {
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1);
-    const cookieString = `username=${email}; expires=${expirationDate.toUTCString()}; path=/`;
-    document.cookie = cookieString;
-  }
-
   // take user to authorize page
   const navigate = useNavigate();
+
+  // Redux
+  const dispatch = useDispatch();
 
   // Signup user in Cognito
   const handleCognitoSignUp = async (e) => {
         e.preventDefault();
-        // set cookie
-        setSessionCookie(formData.email);
+
+        // store email in redux
+        dispatch(setUsername(formData.email));
+
         try {
-          // const lambda = new AWS.Lambda({ region: 'eu-west-2'});
           const lambda = new AWS.Lambda();
     
           const payload = {
@@ -115,29 +105,6 @@ const AuthRegister = ({ ...others }) => {
           };
       
           const response = await lambda.invoke(params).promise();
-
-          // API GATEWAY
-          // const apiEndpoint = 'https://x5i2g8uwzd.execute-api.eu-west-2.amazonaws.com/dev';
-          // const requestData = {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: params.Payload,
-          // };
-          // fetch(apiEndpoint, requestData)
-          //   .then((response) => {
-          //     if (!response.ok) {
-          //       throw new Error('Network response was not ok');
-          //     }
-          //     return response.json();
-          //   })
-          //   .then((responseData) => {
-          //     console.log('API Response:', responseData);
-          //   })
-          //   .catch((error) => {
-          //     console.error('API Error:', error);
-          //   });
 
           const responseBody = JSON.parse(response.Payload);
       
@@ -323,13 +290,12 @@ const AuthRegister = ({ ...others }) => {
               <AnimateButton>
               <Button
                 disableElevation
-                disabled={isSubmitting}
+                disabled={values.firstName === '' || values.lastName === '' || values.email === '' || values.password === ''}
                 fullWidth
                 size="large"
                 type="submit"
                 variant="contained"
                 color="secondary"
-                // onClick={handleSignUpClick}
               >
                   Sign up
                 </Button>
@@ -342,5 +308,4 @@ const AuthRegister = ({ ...others }) => {
   );
 };
 
-// export default connect(null, { setUsername })(AuthRegister);
-export default AuthRegister;
+export default connect(null, { setUsername })(AuthRegister);

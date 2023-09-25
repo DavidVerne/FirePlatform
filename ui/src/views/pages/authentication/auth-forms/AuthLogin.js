@@ -193,7 +193,14 @@ const AuthLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+                <Button 
+                  disableElevation 
+                  disabled={values.email === '' || values.password === ''}
+                  fullWidth 
+                  size="large" 
+                  type="submit" 
+                  variant="contained" 
+                  color="secondary">
                   Sign in
                 </Button>
               </AnimateButton>

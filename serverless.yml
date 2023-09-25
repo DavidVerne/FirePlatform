@@ -51,6 +51,13 @@ functions:
           path: resendVerificationCode
           method: post
           cors: true
+  resetPassword:
+    handler: server/handlers/cognito/resetPassword.handler
+    events:
+      - http:
+          path: resetPassword
+          method: post
+          cors: true
 
 # you can add CloudFormation resource templates here
 resources:
