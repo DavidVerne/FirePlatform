@@ -1,21 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
-  Stack,
-  Typography
+  OutlinedInput
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -24,18 +19,22 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
-import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const AuthLogin = ({ ...others }) => {
+const AuthResetPassword = ({ username, ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  // success message from lambda
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [successMessage, setSuccessMessage] = useState(null);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleMouseDownPassword = (event) => {
@@ -43,9 +42,13 @@ const AuthLogin = ({ ...others }) => {
   };
 
   const [formData, setFormData] = useState({
-    email: '',
+    username: username,
     password: '',
+    confirmPassword: '',
   });
+
+  const initialMatchedPasswords = formData.password === formData.confirmPassword && formData.password !== '';
+  const [matchedPasswords, setMatchedPasswords] = useState(initialMatchedPasswords);  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -53,10 +56,14 @@ const AuthLogin = ({ ...others }) => {
       ...prevFormData,
       [name]: value,
     }));
+    if (name === 'password' || name === 'confirmPassword') {
+        if (formData.password === formData.confirmPassword) {
+          setMatchedPasswords(true);
+        } else {
+          setMatchedPasswords(false);
+        }
+      }
   };
-
-  // take user to authorize page
-  const navigate = useNavigate();
 
   const handleCognitoLogin = async (e) => {
     e.preventDefault();
@@ -64,12 +71,12 @@ const AuthLogin = ({ ...others }) => {
       const lambda = new AWS.Lambda();
 
       const payload = {
-        email: formData.email,
+        username: formData.username,
         password: formData.password,
       };
   
       const params = {
-        FunctionName: 'loginUser',
+        FunctionName: 'resetPassword',
         InvocationType: 'RequestResponse',
         Payload: JSON.stringify(payload),
       };
@@ -80,10 +87,10 @@ const AuthLogin = ({ ...others }) => {
   
       if (responseBody.success) {
         console.error('User registration successful:', responseBody.success);
-        navigate('/');
+        setSuccessMessage('Password successfully changed.');
       } else {
         console.error('User registration failed:', responseBody.error);
-        setSuccessMessage('Login failed. Please try again.');
+        setSuccessMessage('Failed to change password. Please try again.');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -110,13 +117,17 @@ const AuthLogin = ({ ...others }) => {
 
       <Formik
         initialValues={{
-          email: '',
           password: '',
+          confirmPassword: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+            password: Yup.string()
+            .min(8, 'Password must be at least 8 characters')
+            .required('Password is required'),
+          confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -136,33 +147,10 @@ const AuthLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleCognitoLogin} {...others}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email-login"
-                type="email"
-                name="email"
-                value={formData.email}
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange(e); 
-                  handleInputChange(e);
-                }}
-                label="Email Address / Username"
-                inputProps={{}}
-                required
-              />
-              {touched.email && errors.email && (
-                <FormHelperText error id="standard-weight-helper-text-email-login">
-                  {errors.email}
-                </FormHelperText>
-              )}
-            </FormControl>
-
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password-login"
+                id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 name="password"
@@ -189,32 +177,47 @@ const AuthLogin = ({ ...others }) => {
                 inputProps={{}}
               />
               {touched.password && errors.password && (
-                <FormHelperText error id="standard-weight-helper-text-password-login">
+                <FormHelperText error id="standard-weight-helper-text-password">
                   {errors.password}
                 </FormHelperText>
               )}
             </FormControl>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                }
-                label="Remember me"
-              />
-              <Typography 
-                color="secondary" 
-                component={Link} 
-                to='/resetpassword/' 
-                variant="subtitle1" sx={{
-                  textDecoration: 'none',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
+
+            <FormControl fullWidth error={Boolean(touched.confirmPassword && errors.confirmPassword)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-confirm-password">Confirm password</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-confirm-password"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={formData.confirmPassword}
+                name="confirmPassword"
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  handleChange(e); 
+                  handleInputChange(e);
                 }}
-              >
-                Forgot Password?
-              </Typography>
-            </Stack>
+                required
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle confirm password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      size="large"
+                    >
+                    {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirm password"
+                inputProps={{}}
+              />
+              {touched.confirmPassword && errors.confirmPassword && (
+                <FormHelperText error id="standard-weight-helper-text-confirm-password">
+                  {errors.confirmPassword}
+                </FormHelperText>
+              )}
+            </FormControl>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -225,13 +228,13 @@ const AuthLogin = ({ ...others }) => {
               <AnimateButton>
                 <Button 
                   disableElevation 
-                  disabled={values.email === '' || values.password === ''}
+                  disabled={!matchedPasswords}
                   fullWidth 
                   size="large" 
                   type="submit" 
                   variant="contained" 
                   color="secondary">
-                  Sign in
+                  Submit
                 </Button>
               </AnimateButton>
             </Box>
@@ -247,4 +250,8 @@ const AuthLogin = ({ ...others }) => {
   );
 };
 
-export default AuthLogin;
+const mapStateToProps = (state) => ({
+    username: state.user.username,
+  });
+  
+  export default connect(mapStateToProps)(AuthResetPassword);

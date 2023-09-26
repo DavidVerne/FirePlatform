@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
-import AuthLogin from '../auth-forms/AuthLogin';
+import AuthResetPassword from '../auth-forms/AuthResetPassword';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 
@@ -14,9 +14,9 @@ import {
   useMediaQuery
 } from '@mui/material';
 
-// ================================|| LOGIN ||================================ //
+// ================================|| RESET PASSWORD ||================================ //
 
-const Login = () => {
+const ResetPassword = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -38,30 +38,34 @@ const Login = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Sign in
+                            Reset Password
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
+                            Enter your new password to continue
                           </Typography>
                         </Stack>
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthLogin />
+                    <AuthResetPassword />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to='/register/' variant="subtitle1" sx={{
-                        textDecoration: 'none',
-                        '&:hover': {
-                          textDecoration: 'underline',
-                        },
-                      }}>
-                        Dont have an account
+                      <Typography 
+                        component={Link} 
+                        to='/login/' 
+                        variant="subtitle1" sx={{
+                            textDecoration: 'none',
+                            '&:hover': {
+                            textDecoration: 'underline',
+                            },
+                        }}
+                      >
+                        Return to login
                       </Typography>
                     </Grid>
                   </Grid>
@@ -78,4 +82,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

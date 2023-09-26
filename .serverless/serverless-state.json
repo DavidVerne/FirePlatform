@@ -221,7 +221,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/loginUser.handler",
               "Runtime": "nodejs14.x",
@@ -256,7 +256,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/registerUser.handler",
               "Runtime": "nodejs14.x",
@@ -291,7 +291,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/authorizeUser.handler",
               "Runtime": "nodejs14.x",
@@ -326,7 +326,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resendVerificationCode.handler",
               "Runtime": "nodejs14.x",
@@ -361,7 +361,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resetPassword.handler",
               "Runtime": "nodejs14.x",
@@ -389,54 +389,54 @@
               "ResetPasswordLogGroup"
             ]
           },
-          "LoginUserLambdaVersionsCDC7ZEKBtmY7HojpoEOcu9zm738KiP9ZGsGhvXp7oQ": {
+          "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginUserLambdaFunction"
               },
-              "CodeSha256": "onNqsmHMMMTrPSsD3JHmyh4hKn7aT3Vmf6M8M2rl3ek="
+              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
             }
           },
-          "RegisterUserLambdaVersionEX2mGZDQJc5eNSYyeFKSqnqxBotfbTJyZGK2sYY4Tk": {
+          "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterUserLambdaFunction"
               },
-              "CodeSha256": "onNqsmHMMMTrPSsD3JHmyh4hKn7aT3Vmf6M8M2rl3ek="
+              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
             }
           },
-          "AuthorizeUserLambdaVersionDgAmTAEywphbnxpuYEGdZ2vnXnv3VAiLwLgNSoQhSE": {
+          "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthorizeUserLambdaFunction"
               },
-              "CodeSha256": "onNqsmHMMMTrPSsD3JHmyh4hKn7aT3Vmf6M8M2rl3ek="
+              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
             }
           },
-          "ResendVerificationCodeLambdaVersionxLHiHSJCZOQftLxPoFkgebeS2gRt0KQqeIu7co080Q": {
+          "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ResendVerificationCodeLambdaFunction"
               },
-              "CodeSha256": "onNqsmHMMMTrPSsD3JHmyh4hKn7aT3Vmf6M8M2rl3ek="
+              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
             }
           },
-          "ResetPasswordLambdaVersion8ZjE5PhAi0xcWWi4nQ7QJTXOFBAaDZbkRzwXb6xJk": {
+          "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ResetPasswordLambdaFunction"
               },
-              "CodeSha256": "onNqsmHMMMTrPSsD3JHmyh4hKn7aT3Vmf6M8M2rl3ek="
+              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
             }
           },
           "ApiGatewayRestApi": {
@@ -981,7 +981,7 @@
               "ResetPasswordLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1695653862956": {
+          "ApiGatewayDeployment1695737046128": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1229,7 +1229,9 @@
                 "Ref": "CognitoUserPool"
               },
               "ExplicitAuthFlows": [
-                "ADMIN_NO_SRP_AUTH"
+                "ALLOW_USER_SRP_AUTH",
+                "ALLOW_REFRESH_TOKEN_AUTH",
+                "ALLOW_USER_PASSWORD_AUTH"
               ],
               "GenerateSecret": false
             }
@@ -1270,7 +1272,7 @@
           "LoginUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginUserLambdaVersionsCDC7ZEKBtmY7HojpoEOcu9zm738KiP9ZGsGhvXp7oQ"
+              "Ref": "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-LoginUserLambdaFunctionQualifiedArn"
@@ -1279,7 +1281,7 @@
           "RegisterUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterUserLambdaVersionEX2mGZDQJc5eNSYyeFKSqnqxBotfbTJyZGK2sYY4Tk"
+              "Ref": "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-RegisterUserLambdaFunctionQualifiedArn"
@@ -1288,7 +1290,7 @@
           "AuthorizeUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthorizeUserLambdaVersionDgAmTAEywphbnxpuYEGdZ2vnXnv3VAiLwLgNSoQhSE"
+              "Ref": "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-AuthorizeUserLambdaFunctionQualifiedArn"
@@ -1297,7 +1299,7 @@
           "ResendVerificationCodeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ResendVerificationCodeLambdaVersionxLHiHSJCZOQftLxPoFkgebeS2gRt0KQqeIu7co080Q"
+              "Ref": "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-ResendVerificationCodeLambdaFunctionQualifiedArn"
@@ -1306,7 +1308,7 @@
           "ResetPasswordLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ResetPasswordLambdaVersion8ZjE5PhAi0xcWWi4nQ7QJTXOFBAaDZbkRzwXb6xJk"
+              "Ref": "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-ResetPasswordLambdaFunctionQualifiedArn"
@@ -1465,7 +1467,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "LoginUserLambdaVersionsCDC7ZEKBtmY7HojpoEOcu9zm738KiP9ZGsGhvXp7oQ"
+        "versionLogicalId": "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI"
       },
       "registerUser": {
         "handler": "server/handlers/cognito/registerUser.handler",
@@ -1503,7 +1505,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "RegisterUserLambdaVersionEX2mGZDQJc5eNSYyeFKSqnqxBotfbTJyZGK2sYY4Tk"
+        "versionLogicalId": "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg"
       },
       "authorizeUser": {
         "handler": "server/handlers/cognito/authorizeUser.handler",
@@ -1541,7 +1543,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AuthorizeUserLambdaVersionDgAmTAEywphbnxpuYEGdZ2vnXnv3VAiLwLgNSoQhSE"
+        "versionLogicalId": "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4"
       },
       "resendVerificationCode": {
         "handler": "server/handlers/cognito/resendVerificationCode.handler",
@@ -1579,7 +1581,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "ResendVerificationCodeLambdaVersionxLHiHSJCZOQftLxPoFkgebeS2gRt0KQqeIu7co080Q"
+        "versionLogicalId": "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM"
       },
       "resetPassword": {
         "handler": "server/handlers/cognito/resetPassword.handler",
@@ -1617,7 +1619,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "ResetPasswordLambdaVersion8ZjE5PhAi0xcWWi4nQ7QJTXOFBAaDZbkRzwXb6xJk"
+        "versionLogicalId": "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4"
       }
     },
     "resources": {
@@ -1664,7 +1666,9 @@
               "Ref": "CognitoUserPool"
             },
             "ExplicitAuthFlows": [
-              "ADMIN_NO_SRP_AUTH"
+              "ALLOW_USER_SRP_AUTH",
+              "ALLOW_REFRESH_TOKEN_AUTH",
+              "ALLOW_USER_PASSWORD_AUTH"
             ],
             "GenerateSecret": false
           }
@@ -1717,7 +1721,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1695653869824-2023-09-25T14:57:49.824Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z",
     "artifact": ""
   }
 }

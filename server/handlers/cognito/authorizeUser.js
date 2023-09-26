@@ -1,5 +1,3 @@
-// calls ConfirmSignUp to confirm user in Cognito
-
 const AWS = require('aws-sdk');
 
 exports.handler = async (event, context) => {

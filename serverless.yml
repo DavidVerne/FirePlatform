@@ -90,7 +90,9 @@ resources:
         UserPoolId:
             Ref: CognitoUserPool
         ExplicitAuthFlows:
-              - ADMIN_NO_SRP_AUTH
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+          - ALLOW_USER_PASSWORD_AUTH
         GenerateSecret: false
     LambdaExecutionRole:
       Type: AWS::IAM::Role

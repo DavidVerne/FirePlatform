@@ -39,6 +39,9 @@ const AuthRegister = ({ ...others }) => {
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
+  // success message from lambda
+  const [successMessage, setSuccessMessage] = useState(null);
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -99,7 +102,7 @@ const AuthRegister = ({ ...others }) => {
           };
       
           const params = {
-            FunctionName: 'registerUserInCognito',
+            FunctionName: 'registerUser',
             InvocationType: 'RequestResponse',
             Payload: JSON.stringify(payload),
           };
@@ -110,13 +113,14 @@ const AuthRegister = ({ ...others }) => {
       
           if (responseBody.success) {
             console.error('User registration successful:', responseBody.success);
+            navigate('/authorize');
           } else {
             console.error('User registration failed:', responseBody.error);
+            setSuccessMessage('Signup failed. Please try again.');
           }
         } catch (error) {
           console.error('Error:', error);
         }
-        navigate('/authorize');
       };
 
   return (
@@ -304,6 +308,11 @@ const AuthRegister = ({ ...others }) => {
           </form>
         )}
       </Formik>
+      {successMessage && (
+        <div className="success-message">
+          {successMessage}
+        </div>
+      )}
     </>
   );
 };
