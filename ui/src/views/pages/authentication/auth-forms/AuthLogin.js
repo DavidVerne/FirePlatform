@@ -14,8 +14,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Stack,
-  Typography
+  Stack
 } from '@mui/material';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -25,13 +24,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AWS from 'aws-sdk';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setAccessToken } from '../../../../store/actions';
+import { connect } from 'react-redux';
 
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  // success message from lambda
   const [successMessage, setSuccessMessage] = useState(null);
 
   const handleClickShowPassword = () => {
@@ -58,6 +59,9 @@ const AuthLogin = ({ ...others }) => {
   // take user to authorize page
   const navigate = useNavigate();
 
+  // Redux
+  const dispatch = useDispatch();
+
   const handleCognitoLogin = async (e) => {
     e.preventDefault();
     try {
@@ -77,10 +81,46 @@ const AuthLogin = ({ ...others }) => {
       const response = await lambda.invoke(params).promise();
 
       const responseBody = JSON.parse(response.Payload);
+
+      const accessToken = responseBody.accessToken;
+
+      // store email in redux
+      dispatch(setAccessToken(accessToken));
   
       if (responseBody.success) {
         console.error('User registration successful:', responseBody.success);
         navigate('/');
+      } else {
+        console.error('User registration failed:', responseBody.error);
+        setSuccessMessage('Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    try {
+      const lambda = new AWS.Lambda();
+
+      const payload = {
+        username: formData.email,
+      };
+  
+      const params = {
+        FunctionName: 'forgotPassword',
+        InvocationType: 'RequestResponse',
+        Payload: JSON.stringify(payload),
+      };
+  
+      const response = await lambda.invoke(params).promise();
+
+      const responseBody = JSON.parse(response.Payload);
+  
+      if (responseBody.success) {
+        console.error('Forgot password successful:', responseBody.success);
+        navigate('/resetpassword');
       } else {
         console.error('User registration failed:', responseBody.error);
         setSuccessMessage('Login failed. Please try again.');
@@ -201,19 +241,23 @@ const AuthLogin = ({ ...others }) => {
                 }
                 label="Remember me"
               />
-              <Typography 
+              <Button 
+                onClick={handleForgotPassword}
+                type="submit"
                 color="secondary" 
-                component={Link} 
-                to='/resetpassword/' 
+                // component={Link} 
+                // to='/resetpassword/' 
                 variant="subtitle1" sx={{
                   textDecoration: 'none',
+                  backgroundColor: 'transparent',
                   '&:hover': {
                     textDecoration: 'underline',
+                    backgroundColor: 'transparent',
                   },
                 }}
               >
                 Forgot Password?
-              </Typography>
+              </Button>
             </Stack>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
@@ -247,4 +291,4 @@ const AuthLogin = ({ ...others }) => {
   );
 };
 
-export default AuthLogin;
+export default connect(null, { setAccessToken })(AuthLogin);

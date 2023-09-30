@@ -127,10 +127,22 @@
               "LogGroupName": "/aws/lambda/fireplatform-dev-resendVerificationCode"
             }
           },
+          "ForgotPasswordLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/fireplatform-dev-forgotPassword"
+            }
+          },
           "ResetPasswordLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
               "LogGroupName": "/aws/lambda/fireplatform-dev-resetPassword"
+            }
+          },
+          "LogoutUserLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/fireplatform-dev-logoutUser"
             }
           },
           "IamRoleLambdaExecution": {
@@ -221,7 +233,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/loginUser.handler",
               "Runtime": "nodejs14.x",
@@ -256,7 +268,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/registerUser.handler",
               "Runtime": "nodejs14.x",
@@ -291,7 +303,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/authorizeUser.handler",
               "Runtime": "nodejs14.x",
@@ -326,7 +338,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resendVerificationCode.handler",
               "Runtime": "nodejs14.x",
@@ -354,6 +366,41 @@
               "ResendVerificationCodeLogGroup"
             ]
           },
+          "ForgotPasswordLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
+              },
+              "Handler": "server/handlers/cognito/forgotPassword.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "fireplatform-dev-forgotPassword",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "user_pool_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"user_pool_id\"]"
+                  },
+                  "client_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"client_id\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "ForgotPasswordLogGroup"
+            ]
+          },
           "ResetPasswordLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
@@ -361,7 +408,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resetPassword.handler",
               "Runtime": "nodejs14.x",
@@ -389,54 +436,109 @@
               "ResetPasswordLogGroup"
             ]
           },
-          "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI": {
+          "LogoutUserLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z/fireplatform.zip"
+              },
+              "Handler": "server/handlers/cognito/logoutUser.handler",
+              "Runtime": "nodejs14.x",
+              "FunctionName": "fireplatform-dev-logoutUser",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "user_pool_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"user_pool_id\"]"
+                  },
+                  "client_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"client_id\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "LogoutUserLogGroup"
+            ]
+          },
+          "LoginUserLambdaVersionspP62S4vqKMvnuB8W4vN3hbP8JnXgl02W8vSeMDg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "LoginUserLambdaFunction"
               },
-              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
             }
           },
-          "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg": {
+          "RegisterUserLambdaVersionhCCgsyRML9eKYnbKyzBQbBke2bNAJxf1iQFlaeJG2k": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "RegisterUserLambdaFunction"
               },
-              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
             }
           },
-          "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4": {
+          "AuthorizeUserLambdaVersioniqilTEA7CeBGtbmzKwEZFm7Vt14kmedQL3xcUyFNHc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthorizeUserLambdaFunction"
               },
-              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
             }
           },
-          "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM": {
+          "ResendVerificationCodeLambdaVersionf57JKjVHP0dPRM1QsVOfyhPu1WeaHXqL3Gh7uKt8g": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ResendVerificationCodeLambdaFunction"
               },
-              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
             }
           },
-          "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4": {
+          "ForgotPasswordLambdaVersion2wLmG6OFdQw3R3NYSjnnV0u6IP1UPNYJ7iYYrE9CFY": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ForgotPasswordLambdaFunction"
+              },
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
+            }
+          },
+          "ResetPasswordLambdaVersionfQ2hIkIZktTPENOJXZakLvmbnTxct1iYilJGyXEFNM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ResetPasswordLambdaFunction"
               },
-              "CodeSha256": "n6WzMeE+YkT0Apwb2zMEE5pBifB4wQW2COYqJKRE9lY="
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
+            }
+          },
+          "LogoutUserLambdaVersionrBzV9dbJ9lN0gcWXMsn0D66Mu0quJi0fcApvxIqoFPo": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "LogoutUserLambdaFunction"
+              },
+              "CodeSha256": "XbCKGFiSUp2TAqFw9ESZYIGcW+s37s7fK6D1cID/i5c="
             }
           },
           "ApiGatewayRestApi": {
@@ -511,6 +613,21 @@
               }
             }
           },
+          "ApiGatewayResourceForgotpassword": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "forgotPassword",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
           "ApiGatewayResourceResetpassword": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
@@ -521,6 +638,21 @@
                 ]
               },
               "PathPart": "resetPassword",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceLogoutuser": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "logoutUser",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -706,6 +838,51 @@
               }
             }
           },
+          "ApiGatewayMethodForgotpasswordOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceForgotpassword"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
           "ApiGatewayMethodResetpasswordOptions": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -745,6 +922,51 @@
               },
               "ResourceId": {
                 "Ref": "ApiGatewayResourceResetpassword"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodLogoutuserOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceLogoutuser"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -935,6 +1157,52 @@
               "ResendVerificationCodeLambdaPermissionApiGateway"
             ]
           },
+          "ApiGatewayMethodForgotpasswordPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceForgotpassword"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "ForgotPasswordLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "ForgotPasswordLambdaPermissionApiGateway"
+            ]
+          },
           "ApiGatewayMethodResetpasswordPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -981,7 +1249,53 @@
               "ResetPasswordLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1695737046128": {
+          "ApiGatewayMethodLogoutuserPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceLogoutuser"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "LogoutUserLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "LogoutUserLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1696070827799": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -994,12 +1308,16 @@
               "ApiGatewayMethodRegisteruserOptions",
               "ApiGatewayMethodAuthorizeuserOptions",
               "ApiGatewayMethodResendverificationcodeOptions",
+              "ApiGatewayMethodForgotpasswordOptions",
               "ApiGatewayMethodResetpasswordOptions",
+              "ApiGatewayMethodLogoutuserOptions",
               "ApiGatewayMethodLoginuserPost",
               "ApiGatewayMethodRegisteruserPost",
               "ApiGatewayMethodAuthorizeuserPost",
               "ApiGatewayMethodResendverificationcodePost",
-              "ApiGatewayMethodResetpasswordPost"
+              "ApiGatewayMethodForgotpasswordPost",
+              "ApiGatewayMethodResetpasswordPost",
+              "ApiGatewayMethodLogoutuserPost"
             ]
           },
           "LoginUserLambdaPermissionApiGateway": {
@@ -1150,12 +1468,86 @@
               }
             }
           },
+          "ForgotPasswordLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ForgotPasswordLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
           "ResetPasswordLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
                   "ResetPasswordLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "LogoutUserLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "LogoutUserLambdaFunction",
                   "Arn"
                 ]
               },
@@ -1272,7 +1664,7 @@
           "LoginUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI"
+              "Ref": "LoginUserLambdaVersionspP62S4vqKMvnuB8W4vN3hbP8JnXgl02W8vSeMDg"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-LoginUserLambdaFunctionQualifiedArn"
@@ -1281,7 +1673,7 @@
           "RegisterUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg"
+              "Ref": "RegisterUserLambdaVersionhCCgsyRML9eKYnbKyzBQbBke2bNAJxf1iQFlaeJG2k"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-RegisterUserLambdaFunctionQualifiedArn"
@@ -1290,7 +1682,7 @@
           "AuthorizeUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4"
+              "Ref": "AuthorizeUserLambdaVersioniqilTEA7CeBGtbmzKwEZFm7Vt14kmedQL3xcUyFNHc"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-AuthorizeUserLambdaFunctionQualifiedArn"
@@ -1299,19 +1691,37 @@
           "ResendVerificationCodeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM"
+              "Ref": "ResendVerificationCodeLambdaVersionf57JKjVHP0dPRM1QsVOfyhPu1WeaHXqL3Gh7uKt8g"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-ResendVerificationCodeLambdaFunctionQualifiedArn"
             }
           },
+          "ForgotPasswordLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ForgotPasswordLambdaVersion2wLmG6OFdQw3R3NYSjnnV0u6IP1UPNYJ7iYYrE9CFY"
+            },
+            "Export": {
+              "Name": "sls-fireplatform-dev-ForgotPasswordLambdaFunctionQualifiedArn"
+            }
+          },
           "ResetPasswordLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4"
+              "Ref": "ResetPasswordLambdaVersionfQ2hIkIZktTPENOJXZakLvmbnTxct1iYilJGyXEFNM"
             },
             "Export": {
               "Name": "sls-fireplatform-dev-ResetPasswordLambdaFunctionQualifiedArn"
+            }
+          },
+          "LogoutUserLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "LogoutUserLambdaVersionrBzV9dbJ9lN0gcWXMsn0D66Mu0quJi0fcApvxIqoFPo"
+            },
+            "Export": {
+              "Name": "sls-fireplatform-dev-LogoutUserLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -1467,7 +1877,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "LoginUserLambdaVersioniTHK4w06XvqNg5xHyjHk8A3izLszLIJieXMc7UyQKqI"
+        "versionLogicalId": "LoginUserLambdaVersionspP62S4vqKMvnuB8W4vN3hbP8JnXgl02W8vSeMDg"
       },
       "registerUser": {
         "handler": "server/handlers/cognito/registerUser.handler",
@@ -1505,7 +1915,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "RegisterUserLambdaVersionxY2Yw2lyDqIbQuLxzt8EgXWoWubvncRNrbjeWowyg"
+        "versionLogicalId": "RegisterUserLambdaVersionhCCgsyRML9eKYnbKyzBQbBke2bNAJxf1iQFlaeJG2k"
       },
       "authorizeUser": {
         "handler": "server/handlers/cognito/authorizeUser.handler",
@@ -1543,7 +1953,7 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AuthorizeUserLambdaVersionSZILA8XPDFFSOMtQnERByuOQtYicGJf9DXniMVIL4"
+        "versionLogicalId": "AuthorizeUserLambdaVersioniqilTEA7CeBGtbmzKwEZFm7Vt14kmedQL3xcUyFNHc"
       },
       "resendVerificationCode": {
         "handler": "server/handlers/cognito/resendVerificationCode.handler",
@@ -1581,7 +1991,45 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "ResendVerificationCodeLambdaVersionIt9cEewSrh8yIZWPaWvAntN3NKbmMRoTe6jCVVM"
+        "versionLogicalId": "ResendVerificationCodeLambdaVersionf57JKjVHP0dPRM1QsVOfyhPu1WeaHXqL3Gh7uKt8g"
+      },
+      "forgotPassword": {
+        "handler": "server/handlers/cognito/forgotPassword.handler",
+        "events": [
+          {
+            "http": {
+              "path": "forgotPassword",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "fireplatform-dev-forgotPassword",
+        "package": {
+          "artifact": ".serverless/fireplatform.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "ForgotPasswordLambdaVersion2wLmG6OFdQw3R3NYSjnnV0u6IP1UPNYJ7iYYrE9CFY"
       },
       "resetPassword": {
         "handler": "server/handlers/cognito/resetPassword.handler",
@@ -1619,7 +2067,45 @@
         "timeout": 6,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "ResetPasswordLambdaVersionw6sz6U55FMEnJ0ujwS61UpKppzbDJwhdtp6MosCfO4"
+        "versionLogicalId": "ResetPasswordLambdaVersionfQ2hIkIZktTPENOJXZakLvmbnTxct1iYilJGyXEFNM"
+      },
+      "logoutUser": {
+        "handler": "server/handlers/cognito/logoutUser.handler",
+        "events": [
+          {
+            "http": {
+              "path": "logoutUser",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "fireplatform-dev-logoutUser",
+        "package": {
+          "artifact": ".serverless/fireplatform.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs14.x",
+        "vpc": {},
+        "versionLogicalId": "LogoutUserLambdaVersionrBzV9dbJ9lN0gcWXMsn0D66Mu0quJi0fcApvxIqoFPo"
       }
     },
     "resources": {
@@ -1721,7 +2207,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1695737047569-2023-09-26T14:04:07.569Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1696070835161-2023-09-30T10:47:15.161Z",
     "artifact": ""
   }
 }

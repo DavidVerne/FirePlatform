@@ -43,12 +43,18 @@ const AuthResetPassword = ({ username, ...others }) => {
 
   const [formData, setFormData] = useState({
     username: username,
+    verificationCode: '',
     password: '',
     confirmPassword: '',
   });
 
-  const initialMatchedPasswords = formData.password === formData.confirmPassword && formData.password !== '';
-  const [matchedPasswords, setMatchedPasswords] = useState(initialMatchedPasswords);  
+  const [matchedPasswords, setMatchedPasswords] = useState(false); 
+
+  useEffect(() => {
+    const { verificationCode, password, confirmPassword } = formData;
+    const passwordsMatch = password === confirmPassword && password !== '' && (verificationCode !== '' && verificationCode.length >= 6);
+    setMatchedPasswords(passwordsMatch);
+  }, [formData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,13 +62,6 @@ const AuthResetPassword = ({ username, ...others }) => {
       ...prevFormData,
       [name]: value,
     }));
-    if (name === 'password' || name === 'confirmPassword') {
-        if (formData.password === formData.confirmPassword) {
-          setMatchedPasswords(true);
-        } else {
-          setMatchedPasswords(false);
-        }
-      }
   };
 
   const handleCognitoLogin = async (e) => {
@@ -71,6 +70,7 @@ const AuthResetPassword = ({ username, ...others }) => {
       const lambda = new AWS.Lambda();
 
       const payload = {
+        verificationCode: formData.verificationCode,
         username: formData.username,
         password: formData.password,
       };
@@ -122,7 +122,8 @@ const AuthResetPassword = ({ username, ...others }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-            password: Yup.string()
+          verificationCode: Yup.string().min(6, 'Verification code must be at least 6 characters').max(6).required('Cannot be empty'),
+          password: Yup.string()
             .min(8, 'Password must be at least 8 characters')
             .required('Password is required'),
           confirmPassword: Yup.string()
@@ -147,6 +148,34 @@ const AuthResetPassword = ({ username, ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleCognitoLogin} {...others}>
+            <FormControl fullWidth error={Boolean(touched.verificationCode && errors.verificationCode)} sx={{ ...theme.typography.customInput }}>
+                <InputLabel htmlFor="outlined-adornment-verificationCode-register">Verification code</InputLabel>
+                <OutlinedInput
+                    sx={{
+                      fontSize: '20px',
+                  }}
+                    id="outlined-adornment-verificationCode-register"
+                    type="text"
+                    value={values.verificationCode}
+                    name="verificationCode"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                        if (e.target.value.length <= 6) {
+                            handleChange(e); 
+                            handleInputChange(e);
+                          }
+                    }}
+                    inputProps={{
+                        maxLength: 6,
+                    }}
+                />
+                {touched.verificationCode && errors.verificationCode && (
+                    <FormHelperText error id="standard-weight-helper-text--register">
+                    {errors.verificationCode}
+                    </FormHelperText>
+                )}
+            </FormControl>
+
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput

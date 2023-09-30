@@ -15,7 +15,6 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import AWS from 'aws-sdk';
-import './AuthAuthorize.scss';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -109,9 +108,11 @@ const AuthAuthorize = ({ username, ...others }) => {
             <Grid container spacing={matchDownSM ? 0 : 2}>
             <Grid item xs={12} sm={12}>
                 <FormControl fullWidth error={Boolean(touched.verificationCode && errors.verificationCode)} sx={{ ...theme.typography.customInput }}>
-                <InputLabel htmlFor="outlined-adornment-verificationCode-register"></InputLabel>
+                <InputLabel htmlFor="outlined-adornment-verificationCode-register">Verification Code</InputLabel>
                 <OutlinedInput
-                    id="outlined-adornment-verificationCode-register"
+                    sx={{
+                      fontSize: '20px',
+                  }}
                     type="text"
                     value={values.verificationCode}
                     name="verificationCode"

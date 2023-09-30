@@ -40,8 +40,8 @@ const ResetPassword = () => {
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
                             Reset Password
                           </Typography>
-                          <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your new password to continue
+                          <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'center'}>
+                            A verification code was sent to your email. Please enter it below along with your new password.
                           </Typography>
                         </Stack>
                       </Grid>

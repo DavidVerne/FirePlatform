@@ -51,11 +51,25 @@ functions:
           path: resendVerificationCode
           method: post
           cors: true
+  forgotPassword:
+    handler: server/handlers/cognito/forgotPassword.handler
+    events:
+      - http:
+          path: forgotPassword
+          method: post
+          cors: true
   resetPassword:
     handler: server/handlers/cognito/resetPassword.handler
     events:
       - http:
           path: resetPassword
+          method: post
+          cors: true
+  logoutUser:
+    handler: server/handlers/cognito/logoutUser.handler
+    events:
+      - http:
+          path: logoutUser
           method: post
           cors: true
 

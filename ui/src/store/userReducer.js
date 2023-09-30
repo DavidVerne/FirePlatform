@@ -1,7 +1,9 @@
 import { SET_USERNAME } from './actions';
+import { SET_ACCESSTOKEN } from './actions';
 
 const initialState = {
     username: '',
+    accessToken: '',
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -10,6 +12,11 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 username: action.payload,
+            };
+        case SET_ACCESSTOKEN:
+            return {
+                ...state,
+                accessToken: action.payload,
             };
         default:
             return state;
