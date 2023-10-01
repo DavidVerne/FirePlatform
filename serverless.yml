@@ -19,63 +19,97 @@ provider:
         - cognito-idp:AdminCreateUser
         - cognito-idp:AdminSetUserPassword
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - s3:PutBucketPolicy
+      Resource: "arn:aws:s3:::${self:provider.stage}-fireplatform-ui/*" 
 plugins:
   - serverless-webpack
+  - serverless-s3-deploy
+
+custom:
+  s3Deploy:
+    buckets:
+      - name: ${self:provider.stage}-fireplatform-ui
 
 functions:
   loginUser:
     handler: server/handlers/cognito/loginUser.handler
-    events:
-      - http:
-          path: loginUser
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   registerUser:
     handler: server/handlers/cognito/registerUser.handler
-    events:
-      - http:
-          path: registerUser
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   authorizeUser:
     handler: server/handlers/cognito/authorizeUser.handler
-    events:
-      - http:
-          path: authorizeUser
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   resendVerificationCode:
     handler: server/handlers/cognito/resendVerificationCode.handler
-    events:
-      - http:
-          path: resendVerificationCode
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   forgotPassword:
     handler: server/handlers/cognito/forgotPassword.handler
-    events:
-      - http:
-          path: forgotPassword
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   resetPassword:
     handler: server/handlers/cognito/resetPassword.handler
-    events:
-      - http:
-          path: resetPassword
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
   logoutUser:
     handler: server/handlers/cognito/logoutUser.handler
-    events:
-      - http:
-          path: logoutUser
-          method: post
-          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - lambda:InvokeFunction
+        Resource: "*"
 
-# you can add CloudFormation resource templates here
 resources:
   Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.stage}-fireplatform-ui
+    # S3BucketPolicy:
+    #   Type: AWS::S3::BucketPolicy
+    #   Properties:
+    #     Bucket:
+    #       Ref: S3Bucket
+    #     PolicyDocument:
+    #       Statement:
+    #         - Effect: Allow
+    #           Principal: "*"
+    #           Action: 
+    #             - s3:GetObject
+    #           Resource: 
+    #             Fn::Join:
+    #               - ""
+    #               - - "arn:aws:s3:::"
+    #                 - Ref: S3Bucket
+    #                 - "/*"
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:

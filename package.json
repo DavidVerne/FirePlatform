@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "amazon-cognito-identity-js": "^6.3.5"
+    "amazon-cognito-identity-js": "^6.3.5",
+    "serverless-s3-deploy": "^0.10.1"
   },
   "devDependencies": {
     "babel-loader": "^9.1.3",
