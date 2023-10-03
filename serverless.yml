@@ -44,6 +44,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   registerUser:
     handler: server/handlers/cognito/registerUser.handler
     iamRoleStatements:
@@ -51,6 +55,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   authorizeUser:
     handler: server/handlers/cognito/authorizeUser.handler
     iamRoleStatements:
@@ -58,6 +66,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   resendVerificationCode:
     handler: server/handlers/cognito/resendVerificationCode.handler
     iamRoleStatements:
@@ -65,6 +77,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   forgotPassword:
     handler: server/handlers/cognito/forgotPassword.handler
     iamRoleStatements:
@@ -72,6 +88,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   resetPassword:
     handler: server/handlers/cognito/resetPassword.handler
     iamRoleStatements:
@@ -79,6 +99,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
   logoutUser:
     handler: server/handlers/cognito/logoutUser.handler
     iamRoleStatements:
@@ -86,6 +110,10 @@ functions:
         Action:
           - lambda:InvokeFunction
         Resource: "*"
+        Role:
+          Fn::GetAtt:
+            - LambdaExecutionRole
+            - Arn
 
 resources:
   Resources:

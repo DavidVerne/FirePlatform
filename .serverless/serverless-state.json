@@ -253,7 +253,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/loginUser.handler",
               "Runtime": "nodejs14.x",
@@ -288,7 +288,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/registerUser.handler",
               "Runtime": "nodejs14.x",
@@ -323,7 +323,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/authorizeUser.handler",
               "Runtime": "nodejs14.x",
@@ -358,7 +358,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resendVerificationCode.handler",
               "Runtime": "nodejs14.x",
@@ -393,7 +393,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/forgotPassword.handler",
               "Runtime": "nodejs14.x",
@@ -428,7 +428,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resetPassword.handler",
               "Runtime": "nodejs14.x",
@@ -463,7 +463,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/logoutUser.handler",
               "Runtime": "nodejs14.x",
@@ -821,7 +821,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -843,7 +849,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -865,7 +877,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -887,7 +905,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -909,7 +933,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -931,7 +961,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -953,7 +989,13 @@
             "Action": [
               "lambda:InvokeFunction"
             ],
-            "Resource": "*"
+            "Resource": "*",
+            "Role": {
+              "Fn::GetAtt": [
+                "LambdaExecutionRole",
+                "Arn"
+              ]
+            }
           }
         ],
         "events": [],
@@ -1076,7 +1118,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1696165600363-2023-10-01T13:06:40.363Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z",
     "artifact": ""
   }
 }
