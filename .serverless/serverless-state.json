@@ -253,7 +253,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/loginUser.handler",
               "Runtime": "nodejs14.x",
@@ -288,7 +288,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/registerUser.handler",
               "Runtime": "nodejs14.x",
@@ -323,7 +323,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/authorizeUser.handler",
               "Runtime": "nodejs14.x",
@@ -358,7 +358,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resendVerificationCode.handler",
               "Runtime": "nodejs14.x",
@@ -393,7 +393,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/forgotPassword.handler",
               "Runtime": "nodejs14.x",
@@ -428,7 +428,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/resetPassword.handler",
               "Runtime": "nodejs14.x",
@@ -463,7 +463,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z/fireplatform.zip"
+                "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
               },
               "Handler": "server/handlers/cognito/logoutUser.handler",
               "Runtime": "nodejs14.x",
@@ -564,7 +564,81 @@
           "S3Bucket": {
             "Type": "AWS::S3::Bucket",
             "Properties": {
-              "BucketName": "dev-fireplatform-ui"
+              "BucketName": "dev-fireplatform-ui",
+              "WebsiteConfiguration": {
+                "IndexDocument": "index.html",
+                "ErrorDocument": "index.html"
+              }
+            }
+          },
+          "S3BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "Bucket": {
+                "Ref": "S3Bucket"
+              },
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Sid": "PublicReadGetObject",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": [
+                      "s3:GetObject"
+                    ],
+                    "Resource": "arn:aws:s3:::dev-fireplatform-ui/*"
+                  }
+                ]
+              }
+            }
+          },
+          "CloudFrontDistribution": {
+            "Type": "AWS::CloudFront::Distribution",
+            "Properties": {
+              "DistributionConfig": {
+                "Origins": [
+                  {
+                    "DomainName": "dev-fireplatform-ui.s3.amazonaws.com",
+                    "Id": "FirePlatform",
+                    "CustomOriginConfig": {
+                      "HTTPPort": 80,
+                      "HTTPSPort": 443,
+                      "OriginProtocolPolicy": "https-only"
+                    }
+                  }
+                ],
+                "Enabled": "true",
+                "DefaultRootObject": "index.html",
+                "CustomErrorResponses": [
+                  {
+                    "ErrorCode": 404,
+                    "ResponseCode": 200,
+                    "ResponsePagePath": "/index.html"
+                  }
+                ],
+                "DefaultCacheBehavior": {
+                  "AllowedMethods": [
+                    "DELETE",
+                    "GET",
+                    "HEAD",
+                    "OPTIONS",
+                    "PATCH",
+                    "POST",
+                    "PUT"
+                  ],
+                  "TargetOriginId": "FirePlatform",
+                  "ForwardedValues": {
+                    "QueryString": "false",
+                    "Cookies": {
+                      "Forward": "none"
+                    }
+                  },
+                  "ViewerProtocolPolicy": "redirect-to-https"
+                },
+                "ViewerCertificate": {
+                  "CloudFrontDefaultCertificate": "true"
+                }
+              }
             }
           },
           "CognitoUserPool": {
@@ -1015,7 +1089,81 @@
         "S3Bucket": {
           "Type": "AWS::S3::Bucket",
           "Properties": {
-            "BucketName": "dev-fireplatform-ui"
+            "BucketName": "dev-fireplatform-ui",
+            "WebsiteConfiguration": {
+              "IndexDocument": "index.html",
+              "ErrorDocument": "index.html"
+            }
+          }
+        },
+        "S3BucketPolicy": {
+          "Type": "AWS::S3::BucketPolicy",
+          "Properties": {
+            "Bucket": {
+              "Ref": "S3Bucket"
+            },
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Sid": "PublicReadGetObject",
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": [
+                    "s3:GetObject"
+                  ],
+                  "Resource": "arn:aws:s3:::dev-fireplatform-ui/*"
+                }
+              ]
+            }
+          }
+        },
+        "CloudFrontDistribution": {
+          "Type": "AWS::CloudFront::Distribution",
+          "Properties": {
+            "DistributionConfig": {
+              "Origins": [
+                {
+                  "DomainName": "dev-fireplatform-ui.s3.amazonaws.com",
+                  "Id": "FirePlatform",
+                  "CustomOriginConfig": {
+                    "HTTPPort": 80,
+                    "HTTPSPort": 443,
+                    "OriginProtocolPolicy": "https-only"
+                  }
+                }
+              ],
+              "Enabled": "true",
+              "DefaultRootObject": "index.html",
+              "CustomErrorResponses": [
+                {
+                  "ErrorCode": 404,
+                  "ResponseCode": 200,
+                  "ResponsePagePath": "/index.html"
+                }
+              ],
+              "DefaultCacheBehavior": {
+                "AllowedMethods": [
+                  "DELETE",
+                  "GET",
+                  "HEAD",
+                  "OPTIONS",
+                  "PATCH",
+                  "POST",
+                  "PUT"
+                ],
+                "TargetOriginId": "FirePlatform",
+                "ForwardedValues": {
+                  "QueryString": "false",
+                  "Cookies": {
+                    "Forward": "none"
+                  }
+                },
+                "ViewerProtocolPolicy": "redirect-to-https"
+              },
+              "ViewerCertificate": {
+                "CloudFrontDefaultCertificate": "true"
+              }
+            }
           }
         },
         "CognitoUserPool": {
@@ -1118,7 +1266,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/fireplatform/dev/1696243461349-2023-10-02T10:44:21.349Z",
+    "artifactDirectoryName": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z",
     "artifact": ""
   }
 }
