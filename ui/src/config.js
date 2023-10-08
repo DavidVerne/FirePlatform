@@ -4,7 +4,7 @@ const config = {
   // fontFamily: `'Roboto', sans-serif`,
   // borderRadius: 12
   basename: '/',
-  defaultPath: '/dashboard',
+  defaultPath: '/landing',
   fontFamily: `'Roboto', sans-serif`,
   borderRadius: 12
 };
