@@ -1,25 +1,25 @@
-// import { useEffect, useState } from 'react';
-
-// material-ui
-import { Container } from '@mui/material';
-
+import * as React from 'react';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Header from './Header';
 import Home from './Home';
 import Footer from './Footer';
-// ==============================|| DEFAULT DASHBOARD ||============================== //
+// ==============================|| LANDING ||============================== //
 
 const Landing = () => {
-  // const [isLoading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   setLoading(false);
-  // }, []);
 
   return (
-    <Container>
-      <Header />
-      <Home />
-      <Footer />
-    </Container>
+      <React.Fragment>
+      <CssBaseline />
+      {/* <Container> */}
+        {/* <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}> */}
+        <Header />
+        <Home />
+        <Footer />
+        {/* </Box> */}
+      {/* </Container> */}
+    </React.Fragment>
   );
 };
 

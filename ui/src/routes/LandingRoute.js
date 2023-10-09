@@ -13,6 +13,10 @@ const LandingRoute = {
     element: <Landing />,
     children: [
       {
+        path: '/',
+        element: <Landing />
+      },
+      {
         path: '/landing',
         element: <Landing />
       }
