@@ -1,0 +1,12 @@
+:root {
+    /* --primary-color: #FFA500; */
+    --primary-color: #FFC107;
+    --secondary-color: #FFC107;
+    /* --tertiary-color: #FF5722; */
+    --tertiary-color: #FFC107;
+    /* --accent-primary-color: #FEC94F; */
+    --accent-primary-color: #FFC107;
+    /* --accent-secondary-color: #FF8A65; */
+    --accent-secondary-color: #FFC107;
+    --accent-secondary-light-color: #FFFFFF;
+}
