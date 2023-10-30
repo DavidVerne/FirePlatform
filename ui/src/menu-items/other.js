@@ -22,10 +22,8 @@ const other = {
       id: 'documentation',
       title: 'Wealth Building Rate',
       type: 'item',
-      url: '#',
-      icon: icons.IconHelp,
-      external: true,
-      target: true
+      url: '/sample-page/',
+      icon: icons.IconHelp
     }
   ]
 };

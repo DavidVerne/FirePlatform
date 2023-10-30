@@ -18,12 +18,7 @@ import { Stack } from '@mui/system';
 import './Header.css';
 import Logo from 'ui-component/Logo';
 
-// const pages = ['Home', 'Menu', 'Order', 'Blog', 'About', 'Contact'];
-
-const pagesSmall = ['Register', 'Login'];
-
 function Header() {
-
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -38,12 +33,6 @@ function Header() {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
-    // const handleCloseUserMenu = () => {
-    //     setAnchorElUser(null);
-    // };
-
-
 
     return (
         <AppBar component="nav" sx={{
@@ -65,7 +54,6 @@ function Header() {
                                     backgroundColor: 'transparent',
                                 }
                             }} disableRipple>
-                                {/* <img src={brand_img} alt="" /> */}
                                 <Logo />
                             </Box>
                         </Grid>
@@ -106,13 +94,18 @@ function Header() {
                                 }}
                                 disableRipple
                             >
-                                {pagesSmall.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center" sx={{
+                                    <MenuItem key={'register'} onClick={handleCloseNavMenu} component={Link} to='/register/'>
+                                        <Typography textAlign="center" 
+                                        sx={{
                                             textTransform: 'capitalize',
-                                        }}>{page}</Typography>
+                                        }}>Register</Typography>
                                     </MenuItem>
-                                ))}
+                                    <MenuItem key={'login'} onClick={handleCloseNavMenu} component={Link} to='/login/'>
+                                        <Typography textAlign="center" 
+                                        sx={{
+                                            textTransform: 'capitalize',
+                                        }}>Login</Typography>
+                                    </MenuItem>
                             </Menu>
                         </Box>
 
@@ -124,7 +117,6 @@ function Header() {
                             flexGrow: 1,
                             pt: 1
                         }} disableRipple>
-                            {/* <img src={brand_img} alt="" /> */}
                             <Logo />
                         </Box>
 
@@ -134,33 +126,9 @@ function Header() {
                                 justifyContent="center"
                                 alignItems="center">
                                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                                    {/* {pages.map((page) => (
-                                        <Button
-                                            key={page}
-                                            onClick={handleCloseNavMenu}
-                                            sx={{
-                                                my: 5,
-                                                mx: 1,
-                                                color: 'black',
-                                                display: 'block',
-                                                fontWeight: '700',
-                                                fontSize: '14px',
-                                                lineHeight: '17px',
-                                                textTransform: 'capitalize'
-                                            }}
-                                        >
-                                            {
-                                                page === 'Home' ? <span style={{
-                                                    borderBottom: `2px solid ${PRIMARY_COLOR}`,
-                                                }}>{page}</span> : page
-                                            }
-                                        </Button>
-                                    ))} */}
                                 </Box>
                             </Stack>
                         </Grid>
-
-
                         <Grid item md={3} sx={{
                             display: { xs: 'none', sm: 'none', md: 'block', lg: 'block' }
                         }}>
@@ -171,7 +139,6 @@ function Header() {
                                     my: 4,
                                 }}
                             >
-
                                 <Button href='/register/'
                                     sx={{
                                         width: '100px',
@@ -213,8 +180,6 @@ function Header() {
                                 </Button>
                             </Stack>
                         </Grid>
-
-
                     </Grid>
                 </Toolbar>
             </Container>
