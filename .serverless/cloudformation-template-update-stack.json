@@ -221,7 +221,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/loginUser.handler",
         "Runtime": "nodejs14.x",
@@ -256,7 +256,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/registerUser.handler",
         "Runtime": "nodejs14.x",
@@ -291,7 +291,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/authorizeUser.handler",
         "Runtime": "nodejs14.x",
@@ -326,7 +326,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/resendVerificationCode.handler",
         "Runtime": "nodejs14.x",
@@ -361,7 +361,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/forgotPassword.handler",
         "Runtime": "nodejs14.x",
@@ -396,7 +396,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/resetPassword.handler",
         "Runtime": "nodejs14.x",
@@ -431,7 +431,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fireplatform/dev/1696697154797-2023-10-07T16:45:54.797Z/fireplatform.zip"
+          "S3Key": "serverless/fireplatform/dev/1698683093560-2023-10-30T16:24:53.560Z/fireplatform.zip"
         },
         "Handler": "server/handlers/cognito/logoutUser.handler",
         "Runtime": "nodejs14.x",

@@ -68,8 +68,10 @@ const AuthLogin = ({ ...others }) => {
       const lambda = new AWS.Lambda();
 
       const payload = {
-        email: formData.email,
-        password: formData.password,
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       };
   
       const params = {

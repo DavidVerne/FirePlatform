@@ -30,6 +30,8 @@ import { setUsername } from '../../../../store/actions';
 import { useDispatch } from 'react-redux';
 
 // ===========================|| REGISTER ||=========================== //
+// Set the AWS region
+console.log(`AWS Region: ${AWS.config.region}`);
 
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
@@ -95,10 +97,12 @@ const AuthRegister = ({ ...others }) => {
           const lambda = new AWS.Lambda();
     
           const payload = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            password: formData.password,
+            body: JSON.stringify({
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              email: formData.email,
+              password: formData.password,
+            }),
           };
       
           const params = {
